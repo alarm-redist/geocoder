@@ -15,3 +15,7 @@ Imports:
     cli,
     sf,
     tinytiger
+Depends: 
+    R (>= 4.1)
+URL: https://github.com/alarm-redist/geocoder
+BugReports: https://github.com/alarm-redist/geocoder/issues
