@@ -14,10 +14,10 @@
 #' @returns The path to the database, invisibly.
 #'
 #' @examples
-#' gc_prep_street_db(county="Dare", state="NC")
+#' gc_prep_street_db(county = "Dare", state = "NC")
 #'
 #' @export
-gc_prep_street_db <- function(county=NULL, state=NULL, zip=NULL) {
+gc_prep_street_db <- function(county = NULL, state = NULL, zip = NULL) {
     db_dir <- gc_download_path()
 
     invisible(db_dir)

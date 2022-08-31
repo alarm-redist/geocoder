@@ -3,6 +3,9 @@
 
 # **geocoder**: Efficiently Geocode Addresses <img src="man/figures/logo.png" align="right" height="156" />
 
+This project is under development. It should not work. If it happens to
+appear to work, we make no guarantees of accuracy.
+
 <!-- badges: start -->
 
 [![Lifecycle:

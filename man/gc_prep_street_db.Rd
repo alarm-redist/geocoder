@@ -25,6 +25,6 @@ Download and format address ranges from the Census TIGER/Line API, and then
 store in Arrow/GeoParquet format. One of \code{county} or \code{zip} must be provided.
 }
 \examples{
-gc_prep_street_db(county="Dare", state="NC")
+gc_prep_street_db(county = "Dare", state = "NC")
 
 }

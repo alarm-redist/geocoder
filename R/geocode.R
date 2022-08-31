@@ -23,10 +23,10 @@ NULL
 
 #' @rdname gc_code
 #' @export
-gc_code_geo <- function(addresses, street_db=gc_download_path()) {
+gc_code_geo <- function(addresses, street_db = gc_download_path()) {
 }
 
 #' @rdname gc_code
 #' @export
-gc_code_pt <- function(addresses, street_db=gc_download_path()) {
+gc_code_pt <- function(addresses, street_db = gc_download_path()) {
 }
