@@ -3,3 +3,16 @@
 .Rdata
 .httr-oauth
 .DS_Store
+
+
+docs
+
+*.tmp
+*.bak
+*.swp
+*.rds
+*.rda
+!R/sysdata.rda
+!data/*.rda
+
+*_cache
