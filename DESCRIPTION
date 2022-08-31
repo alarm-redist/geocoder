@@ -18,7 +18,8 @@ Imports:
     arrow,
     sf,
     tinytiger
-URL: https://github.com/alarm-redist/geocoder
+URL: https://github.com/alarm-redist/geocoder,
+    http://alarm-redist.org/geocoder/
 BugReports: https://github.com/alarm-redist/geocoder/issues
 LazyData: true
 Suggests: 
