@@ -12,11 +12,11 @@
 #' @export
 #' @rdname gc_cache
 gc_cache_size <- function() {
-  files <- list.files(gc_download_path(), recursive = TRUE, full.names = TRUE)
-  x <- sum(vapply(files, file.size, numeric(1)))
-  class(x) <- "object_size"
-  message(format(x, unit = "auto"))
-  invisible(as.numeric(x))
+    files <- list.files(gc_download_path(), recursive = TRUE, full.names = TRUE)
+    x <- sum(vapply(files, file.size, numeric(1)))
+    class(x) <- "object_size"
+    message(format(x, unit = "auto"))
+    invisible(as.numeric(x))
 }
 
 #' @param force FALSE by default. Asks the user to confirm if interactive. Does
@@ -29,17 +29,17 @@ gc_cache_size <- function() {
 #' @export
 #' @rdname gc_cache
 gc_cache_clear <- function(force = FALSE) {
-  path <- gc_download_path()
-  if (interactive() && !force) {
-    del <- utils::askYesNo(
-      msg = "Are you sure? The entire cache will be deleted.",
-      default = FALSE
-    )
-  } else {
-    del <- force
-  }
-  if (del) unlink(path, recursive = TRUE)
-  invisible(path)
+    path <- gc_download_path()
+    if (interactive() && !force) {
+        del <- utils::askYesNo(
+            msg = "Are you sure? The entire cache will be deleted.",
+            default = FALSE
+        )
+    } else {
+        del <- force
+    }
+    if (del) unlink(path, recursive = TRUE)
+    invisible(path)
 }
 
 #' @returns For `gc_cache_path()`, the path to the cache
@@ -50,5 +50,5 @@ gc_cache_clear <- function(force = FALSE) {
 #' @export
 #' @rdname gc_cache
 gc_cache_path <- function() {
-  gc_download_path()
+    gc_download_path()
 }
