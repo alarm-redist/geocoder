@@ -7,6 +7,7 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/alarm-redist/geocoder/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/alarm-redist/geocoder/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The goal of `geocoder` is to …
