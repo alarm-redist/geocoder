@@ -6,14 +6,14 @@
 \alias{gc_code_pt}
 \title{Geocode Addresses}
 \usage{
-gc_code_geo(addresses, ...)
+gc_code_geo(addresses, street_db = gc_download_path())
 
-gc_code_pt(addresses, ...)
+gc_code_pt(addresses, street_db = gc_download_path())
 }
 \arguments{
 \item{addresses}{A data frame with parsed addresses, from \code{\link[=gc_address]{gc_address()}}.}
 
-\item{...}{TBD}
+\item{street_db}{Path to the street database prepared by \code{\link[=gc_prep_street_db]{gc_prep_street_db()}}.}
 }
 \value{
 A data frame with a row for each input address. For \code{gc_code_geo()},

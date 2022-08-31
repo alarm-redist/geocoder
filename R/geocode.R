@@ -5,7 +5,7 @@
 #' (`gc_code_pt()`) with points for each address.
 #'
 #' @param addresses A data frame with parsed addresses, from [gc_address()].
-#' @param ... TBD
+#' @param street_db Path to the street database prepared by [gc_prep_street_db()].
 #'
 #' @returns A data frame with a row for each input address. For `gc_code_geo()`,
 #'   the columns will report matched Census geographies at different levels.
@@ -23,10 +23,10 @@ NULL
 
 #' @rdname gc_code
 #' @export
-gc_code_geo <- function(addresses, ...) {
+gc_code_geo <- function(addresses, street_db=gc_download_path()) {
 }
 
 #' @rdname gc_code
 #' @export
-gc_code_pt <- function(addresses, ...) {
+gc_code_pt <- function(addresses, street_db=gc_download_path()) {
 }
