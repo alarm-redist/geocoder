@@ -1,22 +1,23 @@
 Package: geocoder
-Title: What the Package Does (One Line, Title Case)
+Title: Efficiently Geocode Addresses
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+Authors@R: c(
+    person("Christopher T.", "Kenny", email = "christopherkenny@fas.harvard.edu", role = c("aut", "cre")),
+    person("Cory", "McCartan", email = "cmccartan@g.harvard.edu", role = "aut"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
-Imports: 
-    arrow,
-    cli,
-    rappdirs,
-    sf,
-    stringi,
-    tinytiger
 Depends: 
     R (>= 4.1)
+Imports: 
+    cli,
+    rappdirs,
+    stringi,
+    arrow,
+    sf,
+    tinytiger
 URL: https://github.com/alarm-redist/geocoder
 BugReports: https://github.com/alarm-redist/geocoder/issues
+LazyData: true

@@ -32,7 +32,7 @@ gc_cache_clear <- function(force = FALSE) {
   path <- gc_download_path()
   if (interactive() && !force) {
     del <- utils::askYesNo(
-      msg = "Are you sure? All recursive directories will be deleted.",
+      msg = "Are you sure? The entire cache will be deleted.",
       default = FALSE
     )
   } else {
