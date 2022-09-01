@@ -31,7 +31,7 @@ counties <- as_tibble(tinytiger::county_fips_2020) |>
 
 
 path <- 'data-raw/ZIP_COUNTY.xlsx'
-download.file("https://www.huduser.gov/portal/datasets/usps/ZIP_COUNTY_122021.xlsx", path)
+curl::curl_download("https://www.huduser.gov/portal/datasets/usps/ZIP_COUNTY_122021.xlsx", path)
 county_zip_code <- readxl::read_excel(path) |>
     transmute(
         state_code = str_sub(county, 1, 2),
@@ -52,9 +52,13 @@ street_dirs <- tibble(
                "WEST","OESTE","W","O")
 )
 
-street_types <- transmute(postmastr::dic_us_suffix,
-                          type_std = str_to_upper(suf.output),
-                          type_in = str_to_upper(suf.input))
+street_types <- rvest::read_html('https://pe.usps.com/text/pub28/28apc_002.htm') |>
+    rvest::html_element('table#ep533076') |>
+    rvest::html_table(header = TRUE) |>
+    transmute(
+        type_std = str_to_upper(`Postal ServiceStandardSuffixAbbreviation`),
+        type_in = str_to_upper(`CommonlyUsed StreetSuffix orAbbreviation`)
+    )
 
 
 usethis::use_data(states, counties, county_zip_code, street_dirs, street_types,
