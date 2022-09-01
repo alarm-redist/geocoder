@@ -14,5 +14,7 @@ docs
 *.rda
 !R/sysdata.rda
 !data/*.rda
+data-raw/*
+!data-raw/*.R
 
 *_cache
