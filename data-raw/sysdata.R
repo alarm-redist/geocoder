@@ -57,6 +57,10 @@ street_types <- transmute(postmastr::dic_us_suffix,
                           type_in = str_to_upper(suf.input))
 
 
+usethis::use_data(states, counties, county_zip_code, street_dirs, street_types,
+                  internal=TRUE, overwrite=TRUE, compress="xz")
+
+
 # # may not need this
 # street_quals <- tibble(
 #     qual_std = c("ACC","ACC","ALT","ALT",
