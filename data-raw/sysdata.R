@@ -23,6 +23,14 @@ states <- censable::stata |>
            state_name = name) |>
     left_join(rename(ap_abbr, state_ap=ap), by=c("state_abbr"="state")) |>
     as_tibble()
+states <- bind_rows(
+    select(states, state_code, state_in=state_abbr),
+    select(states, state_code, state_in=state_name),
+    select(states, state_code, state_in=state_ap)
+) |>
+    arrange(state_code) |>
+    distinct()
+
 
 counties <- as_tibble(tinytiger::county_fips_2020) |>
     rename(state_code=state,
