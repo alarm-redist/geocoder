@@ -1,5 +1,5 @@
 test_that("addresses are parsed correctly", {
-    d_in = data.frame(address = "505  BURNS DR",
+    d_in = data.frame(address = "505  Burns Drive",
                       city = "KILL DEVIL HILLS",
                       zip = "27948")
 
@@ -8,7 +8,7 @@ test_that("addresses are parsed correctly", {
                           num_suff = NA_character_,
                           street_name = "BURNS",
                           street_dir = NA_character_,
-                          street_suff = "Dr",
+                          street_suff = "DR",
                           unit_type = NA_character_,
                           unit_number = NA_integer_,
                           city = "KILL DEVIL HILLS",
