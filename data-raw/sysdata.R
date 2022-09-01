@@ -31,7 +31,7 @@ counties <- as_tibble(tinytiger::county_fips_2020) |>
 
 
 path <- 'data-raw/ZIP_COUNTY.xlsx'
-download.file("https://www.huduser.gov/portal/datasets/usps/ZIP_COUNTY_122021.xlsx", path)
+curl::curl_download("https://www.huduser.gov/portal/datasets/usps/ZIP_COUNTY_122021.xlsx", path)
 county_zip_code <- readxl::read_excel(path) |>
     transmute(
         state_code = str_sub(county, 1, 2),
@@ -53,9 +53,9 @@ street_dirs <- tibble(
 )
 
 
-html <- read_html("https://pe.usps.com/text/pub28/28apc_002.htm")
-street_types <- html_element(html, "#ep533076") |>
-    html_table(header=TRUE) |>
+street_types <- rvest::read_html("https://pe.usps.com/text/pub28/28apc_002.htm") |>
+    rvest::html_element("#ep533076") |>
+    rvest::html_table(header=TRUE) |>
     select(type_std=`Postal ServiceStandardSuffixAbbreviation`,
            type_in=`CommonlyUsed StreetSuffix orAbbreviation`)
 street_types <- bind_rows(
@@ -69,45 +69,3 @@ street_types <- bind_rows(
 usethis::use_data(states, counties, county_zip_code, street_dirs, street_types,
                   internal=TRUE, overwrite=TRUE, compress="xz")
 
-
-# # may not need this
-# street_quals <- tibble(
-#     qual_std = c("ACC","ACC","ALT","ALT",
-#                  "BUS","BUS","BYP","BYP","CON","CON","EXD","EXD",
-#                  "EXN","EXN","HST","HST","LP","LP","OLD","OVP","OVP",
-#                  "PUB","PUB","PVT","PVT","RMP","RMP","SCN","SCN",
-#                  "SPR","SPR","UNP","UNP"),
-#     qual_in = c("ACCESS","ACC","ALTERNATE",
-#                 "ALT","BUSINESS","BUS","BYPASS","BYP","CONNECTOR",
-#                 "CON","EXTENDED","EXD","EXTENSION","EXN","HISTORIC",
-#                 "HST","LOOP","LP","OLD","OVERPASS","PVT","PUBLIC",
-#                 "PUB","PRIVATE","SCN","RAMP","SPR","SCENIC","RMP",
-#                 "SPUR","UNP","UNDERPASS","OVP")
-# )
-
-# # manually extract table with Tabula (no headers)  :(
-# # <https://www2.census.gov/geo/pdfs/maps-data/data/tiger/tgrshp2021/TGRSHP2021_TechDoc_D.pdf>
-# street_type_raw <- read_csv("data-raw/tabula-TGRSHP2021_TechDoc_D.csv", col_names=FALSE)
-# street_types <- street_type_raw |>
-#     transmute(type_std = str_to_upper(X3),
-#               type_full = str_to_upper(X2),
-#               as_prefix = X6 == "Y",
-#               as_suffix = X7 == "Y")
-
-
-# # OLD: address range
-# library(tinytiger)
-# library(sf)
-# county_zip_code <- map_dfr(
-#     seq_len(nrow(county_fips_2020)),
-#     function(i) {
-#         Sys.sleep(1)
-#         st <- county_fips_2020$state[i]
-#         ct <- county_fips_2020$county[i]
-#         cat(str_pad(i, 4), '/3143 --- state: ', st, ' county: ', ct, '\n')
-#         x <- tt_address_ranges(state = st, county = ct)
-#         tibble(
-#             state_code = st, county_code = ct, zip_code = sort(unique(c(x$ZIPL, x$ZIPR)))
-#         )
-#     }
-# )
