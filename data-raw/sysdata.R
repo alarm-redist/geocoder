@@ -1,5 +1,5 @@
 library(tidyverse)
-
+library(rvest)
 
 ap_abbr = tibble(
     ap = c("Ala.","Alaska","Ariz.",
@@ -52,9 +52,18 @@ street_dirs <- tibble(
                "WEST","OESTE","W","O")
 )
 
-street_types <- transmute(postmastr::dic_us_suffix,
-                          type_std = str_to_upper(suf.output),
-                          type_in = str_to_upper(suf.input))
+
+html <- read_html("https://pe.usps.com/text/pub28/28apc_002.htm")
+street_types <- html_element(html, "#ep533076") |>
+    html_table(header=TRUE) |>
+    select(type_std=`Postal ServiceStandardSuffixAbbreviation`,
+           type_in=`CommonlyUsed StreetSuffix orAbbreviation`)
+street_types <- bind_rows(
+    street_types,
+    tibble(type_std=street_types$type_std, type_in=street_types$type_std)
+) |>
+    arrange(type_std) |>
+    distinct()
 
 
 usethis::use_data(states, counties, county_zip_code, street_dirs, street_types,
