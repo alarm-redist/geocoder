@@ -29,7 +29,7 @@ Census geographies (\code{gc_code_geo()}) or actual shapefile information
 \examples{
 data(nc_addr)
 nc_addr |>
-  gc_address() |>
+  gc_address(address, city, zip, state="NC", county=county) |>
   gc_code_geo()
 
 }
