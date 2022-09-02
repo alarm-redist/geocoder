@@ -30,7 +30,10 @@ the Census format for street addresses.
 Parse Addresses
 }
 \examples{
+gc_address(NULL, "125 5th St S St. Petersburg FL 33701")
+gc_address(NULL, "1225 St Charles St St Louis MO")
+
 data(nc_addr)
-gc_address(nc_addr)
+gc_address(nc_addr, address=address, city=city, zip=zip, county=county, state="NC")
 
 }
