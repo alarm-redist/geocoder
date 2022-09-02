@@ -29,6 +29,8 @@ states <- bind_rows(
     select(states, state_code, state_in=state_ap)
 ) |>
     arrange(state_code) |>
+    drop_na() |>
+    mutate(state_in = str_to_upper(state_in)) |>
     distinct()
 
 

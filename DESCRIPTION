@@ -12,9 +12,11 @@ RoxygenNote: 7.2.1
 Depends: 
     R (>= 4.1)
 Imports: 
+    rlang,
+    tibble,
     cli,
     rappdirs,
-    stringi,
+    stringr,
     arrow,
     sf,
     tinytiger
