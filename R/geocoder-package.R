@@ -12,6 +12,9 @@ NULL
 regex_state <- ""
 regex_street_types <- ""
 regex_street_dirs <- ""
+regex_street_city <- ""
+regex_street <- ""
+regex_street_only <- ""
 regex_unit <- "(?:APT |APARTMENT |UNIT |SUITE |# ?|NO\\.? |STE\\.? )[0-9A-Z]+"
 regex_saints <- ""
 regex_poss_saint <- ""
@@ -42,6 +45,8 @@ regex_poss_saint <- ""
                                    "( {regex_unit})?((?: \\S+)+)")
     regex_street <<- str_glue("^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+) ",
                               "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?( {regex_unit})?$")
+    regex_street_only <<- str_glue("^(?:{regex_street_dirs} )?\\.?(\\S+(?: \\S+)*) ",
+                              "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?$")
     regex_poss_saint <<- str_glue("\\b(?:{regex_street_types})\\.?( {regex_street_dirs})?\\.?( {regex_unit})? ST\\.? ")
 
     regex_saints <<- str_c(

@@ -35,9 +35,9 @@ states <- bind_rows(
 
 
 counties <- as_tibble(tinytiger::county_fips_2020) |>
-    rename(state_code=state,
-           county_code=county,
-           county_name=name)
+    transmute(state_code = state,
+              county_code = county,
+              county_name = str_to_upper(name))
 
 
 path <- 'data-raw/ZIP_COUNTY.xlsx'
@@ -70,7 +70,9 @@ street_types <- rvest::read_html("https://pe.usps.com/text/pub28/28apc_002.htm")
            type_in=`CommonlyUsed StreetSuffix orAbbreviation`)
 street_types <- bind_rows(
     street_types,
-    tibble(type_std=street_types$type_std, type_in=street_types$type_std)
+    tibble(type_std=street_types$type_std, type_in=street_types$type_std),
+    tibble(type_std=c("BLVD", "EXT",    "LOOP", "STRASSE", "ACRD", "PVT"),
+           type_in=c("BLVRD", "EXTENDED", "LP", "STRASSE", "ACRD", "PVT"))
 ) |>
     arrange(type_std) |>
     distinct()

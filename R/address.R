@@ -63,6 +63,7 @@ gc_address <- function(data, address, city=NULL, zip=NULL, state=NULL, county=NU
     } else {
         county <- NA_character_
     }
+    if (length(county) == 1) county = rep(county, length(address))
 
     as_tibble(cbind(
         tibble(state_code=state, county_code=county, zip_code=zip),
@@ -102,6 +103,20 @@ parse_street <- function(address) {
     )
 }
 
+parse_street_only <- function(street) {
+    out = street |>
+        str_remove(" ?\\(.+\\) ?") |>
+        str_replace("RTE (\\d+)$", "RTE \\1 RTE") |>
+        str_replace("HWY (\\d+)$", "HWY \\1 HWY") |>
+        str_match(regex_street_only)
+    tibble(
+        street_dir_pre = street_dirs$dir_std[match(out[, 2], street_dirs$dir_in)],
+        street_name = str_trim(out[, 3]),
+        street_type = street_types$type_std[match(out[, 4], street_types$type_in)],
+        street_dir_suff = street_dirs$dir_std[match(out[, 5], street_dirs$dir_in)]
+    )
+}
+
 # Zip codes -------
 regex_zip = r"(^(\d{5})([+-]\d{4})?$)" # 5 digits followed by optional 4-digit code
 extract_zip <- function(address) {
@@ -133,6 +148,7 @@ standardize_state <- function(state) {
 
 # Counties ------
 standardize_county <- function(county, state) {
+    county = str_to_upper(county)
     cty_lookup = split(counties, counties$state_code)
     vapply(seq_along(county), function(i) {
         if (is.na(state[i])) return(NA_character_)
