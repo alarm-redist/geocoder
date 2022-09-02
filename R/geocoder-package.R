@@ -42,7 +42,7 @@ regex_poss_saint <- ""
                                    "( {regex_unit})?((?: \\S+)+)")
     regex_street <<- str_glue("^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+) ",
                               "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?( {regex_unit})?$")
-    regex_poss_saint <<- str_glue("\\bST\\.?( {regex_street_dirs})?\\.?( {regex_unit})? ST\\.?\\b")
+    regex_poss_saint <<- str_glue("\\b(?:{regex_street_types})\\.?( {regex_street_dirs})?\\.?( {regex_unit})? ST\\.? ")
 
     regex_saints <<- str_c(
         "ST\\.? (AGATHA|ALBANS|ALBANS BAY|AMANT|ANN|ANNE|ANSGAR|AUGUSTINE|",

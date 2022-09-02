@@ -14,6 +14,9 @@
 #'   the Census format for street addresses.
 #'
 #' @examples
+#' gc_address(NULL, "125 5th St S St. Petersburg FL 33701")
+#' gc_address(NULL, "1225 St Charles St St Louis MO")
+#'
 #' data(nc_addr)
 #' gc_address(nc_addr, address=address, city=city, zip=zip, county=county, state="NC")
 #'
@@ -70,7 +73,7 @@ gc_address <- function(data, address, city=NULL, zip=NULL, state=NULL, county=NU
 # Streets and Cities ------
 parse_street_city <- function(address) {
     out = address |>
-        str_replace(regex_poss_saint, "ST\\1\\3 SAINT") |>
+        str_replace(regex_poss_saint, "\\1\\2\\4 SAINT ") |>
         str_replace(regex_saints, "SAINT \\1") |>
         str_match(regex_street_city)
     tibble(
