@@ -41,7 +41,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Parse Addresses</h1>
-      <small class="dont-index">Source: <a href="https://github.com/alarm-redist/geocoder/blob/HEAD/R/addresses.R" class="external-link"><code>R/addresses.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/alarm-redist/geocoder/blob/HEAD/R/address.R" class="external-link"><code>R/address.R</code></a></small>
       <div class="d-none name"><code>gc_address.Rd</code></div>
     </div>
 
@@ -51,7 +51,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gc_address</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">gc_address</span><span class="op">(</span><span class="va">data</span>, <span class="va">address</span>, city <span class="op">=</span> <span class="cn">NULL</span>, zip <span class="op">=</span> <span class="cn">NULL</span>, state <span class="op">=</span> <span class="cn">NULL</span>, county <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -60,8 +60,27 @@
 <dd><p>A data frame</p></dd>
 
 
-<dt>...</dt>
-<dd><p>TBD</p></dd>
+<dt>address</dt>
+<dd><p>The column containing the address. Can be a one-line address
+or just the street address component (if <code>city</code>, <code>state</code>, etc. are
+provided). Tidy-evaluated within <code>data</code>.</p></dd>
+
+
+<dt>city</dt>
+<dd><p>A column containing city names. Tidy-evaluated within <code>data</code>.</p></dd>
+
+
+<dt>zip</dt>
+<dd><p>A column containing ZIP codes. Tidy-evaluated within <code>data</code>.</p></dd>
+
+
+<dt>state</dt>
+<dd><p>A column containing states. Tidy-evaluated within <code>data</code>.</p></dd>
+
+
+<dt>county</dt>
+<dd><p>A column containing counties. Matched to an internal list and
+passed on to the output. Tidy-evaluated within <code>data</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -76,7 +95,7 @@ the Census format for street addresses.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">nc_addr</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">gc_address</span><span class="op">(</span><span class="va">nc_addr</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval_tidy(enquo(address), data):</span> object '' not found</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
