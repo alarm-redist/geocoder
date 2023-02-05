@@ -16,14 +16,15 @@ Imports:
     tibble,
     cli,
     rappdirs,
+    withr,
     stringr,
     arrow,
-    sf,
-    tinytiger
+    sf
 URL: https://github.com/alarm-redist/geocoder,
     http://alarm-redist.org/geocoder/
 BugReports: https://github.com/alarm-redist/geocoder/issues
 LazyData: true
 Suggests: 
+    tinytiger,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
