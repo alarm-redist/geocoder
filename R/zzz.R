@@ -12,30 +12,36 @@ regex_poss_saint <- ""
 .onLoad <- function(libname, pkgname) {
     regex_state <<- states$state_in |>
         sort_long_short() |>
-        str_c("\\b", mid=_, "$", collapse="|") |>
+        str_c("\\b", mid = _, "$", collapse = "|") |>
         str_replace_all("\\.", "\\\\.") |>
-        str_c("(", mid=_, ")")
+        str_c("(", mid = _, ")")
     regex_street_types <<- street_types$type_in |>
         sort_long_short() |>
-        str_c(mid=_, collapse="|") |>
-        str_c("(", mid=_, ")")
+        str_c(mid = _, collapse = "|") |>
+        str_c("(", mid = _, ")")
     regex_part_dir <- street_dirs$dir_in |>
         sort_long_short() |>
-        str_c(mid=_, collapse="|")
+        str_c(mid = _, collapse = "|")
     regex_street_dirs <<- str_c("(", regex_part_dir, ")")
     which_short <- which(str_length(street_dirs$dir_in) <= 2)
     regex_street_dirs_short <<- street_dirs$dir_in[which_short] |>
         sort_long_short() |>
-        str_c(mid=_, collapse="|") |>
-        str_c("(", mid=_, ")")
+        str_c(mid = _, collapse = "|") |>
+        str_c("(", mid = _, ")")
 
-    regex_street_city <<- str_glue("^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+) ",
-                                   "(?:{regex_street_types})\\.?(?: {regex_street_dirs_short})?\\.?",
-                                   "( {regex_unit})?((?: \\S+)+)")
-    regex_street <<- str_glue("^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+) ",
-                              "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?( {regex_unit})?$")
-    regex_street_only <<- str_glue("^(?:{regex_street_dirs} )?\\.?(\\S+(?: \\S+)*) ",
-                                   "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?$")
+    regex_street_city <<- str_glue(
+        "^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+) ",
+        "(?:{regex_street_types})\\.?(?: {regex_street_dirs_short})?\\.?",
+        "( {regex_unit})?((?: \\S+)+)"
+    )
+    regex_street <<- str_glue(
+        "^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+) ",
+        "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?( {regex_unit})?$"
+    )
+    regex_street_only <<- str_glue(
+        "^(?:{regex_street_dirs} )?\\.?(\\S+(?: \\S+)*) ",
+        "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?$"
+    )
     regex_poss_saint <<- str_glue("\\b(?:{regex_street_types})\\.?( {regex_street_dirs})?\\.?( {regex_unit})? ST\\.? ")
 
     regex_saints <<- str_c(
@@ -53,4 +59,3 @@ regex_poss_saint <- ""
         "STEPHENS CHURCH|VRAIN|XAVIER)$"
     )
 }
-

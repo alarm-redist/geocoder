@@ -22,14 +22,16 @@
 #' gc_prep_street_db(county = "Dare", state = "NC")
 #'
 #' @export
-gc_prep_street_db <- function(data, path = gc_cache_path(), year=2022,
+gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
                               save_edge = TRUE, save_face = TRUE, save_cens = FALSE,
                               refresh = FALSE) {
     col_idx <- match(c("state_code", "county_code", "zip_code"), colnames(data))
-    if (is.na(col_idx[1]))
+    if (is.na(col_idx[1])) {
         cli_abort("{.arg data} must have a {.var state_code} column.")
-    if (is.na(col_idx[2]) && is.na(col_idx[2]))
+    }
+    if (is.na(col_idx[2]) && is.na(col_idx[2])) {
         cli_abort("{.arg data} must have a {.var county_code} or {.var zip_code} column.")
+    }
 
     need <- tibble()
 
@@ -41,14 +43,17 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year=2022,
 
     if (!is.na(col_idx[3])) { # get ZIPs
         need <- dplyr::semi_join(county_zip_code, data[c(1, 3)],
-                                 by=c("state_code", "zip_code")) |>
+            by = c("state_code", "zip_code")
+        ) |>
             dplyr::distinct(.data$state_code, .data$county_code) |>
             dplyr::filter(!is.na(.data$state_code), !is.na(.data$county_code)) |>
             dplyr::bind_rows(need)
     }
 
-    res <- purrr::pwalk(need, purrr::safely(gc_make_db), year=year,
-                        save_shp=save_shp, save_cens=save_cens, refresh=refresh)
+    res <- purrr::pwalk(need, purrr::safely(gc_make_db),
+        year = year,
+        save_shp = save_shp, save_cens = save_cens, refresh = refresh
+    )
     bad <- purrr::map_lgl(res, function(l) !is.null(l$error))
 
     if (any(bad)) {
