@@ -63,3 +63,49 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
 
     invisible(data)
 }
+
+#' workhorse function to make database
+#' @noRd
+#' @param state_code state fips
+#' @param county_code county fips, one at a time
+gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2022,
+                       save_edge = FALSE, save_face = FALSE, save_cens = FALSE, refresh = FALSE) {
+
+    # for provided state and county, download the files ----
+    cen_addr_feat <- download_cens_addr_feat(state_code, county_code)
+    cen_featnames <- download_cens_featnames(state_code, county_code)
+    # cen_edges <- download_cens_edges(state_code, county_code)
+    cen_faces <- download_cens_faces(state_code, county_code)
+
+    tfids <- unique(c(cen_addr_feat$TFIDL, cen_addr_feat$TFIDR))
+
+    cen_faces <- cen_faces |>
+        dplyr::filter(.data$TFID %in% tfids)
+
+    # based on args (state, county), make select ----
+    cols_to_keep <- c(
+
+    )
+
+    # edges: tells us the geometry, TLID, TFIDL, TFIDR
+    if (save_edge) {
+
+    }
+
+    if (save_face) {
+
+    }
+
+    if (save_cens) {
+
+    }
+
+    data_out <- data.frame()
+
+    # write into arrow database (at `path`) ----
+    arrow::write_dataset(
+        dataset = data_out,
+        partitioning = c("state", "county"),
+        path = stringr::str_glue("{path}/year = {year}")
+    )
+}
