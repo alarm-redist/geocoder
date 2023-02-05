@@ -42,7 +42,9 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
     }
 
     if (!is.na(col_idx[3])) { # get ZIPs
-        need <- dplyr::semi_join(county_zip_code, data[c(1, 3)],
+        need <- dplyr::semi_join(
+            county_zip_code,
+            data[c(1, 3)],
             by = c("state_code", "zip_code")
         ) |>
             dplyr::distinct(.data$state_code, .data$county_code) |>
@@ -69,7 +71,8 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
 #' @param state_code state fips
 #' @param county_code county fips, one at a time
 gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2022,
-                       save_edge = FALSE, save_face = FALSE, save_cens = FALSE, refresh = FALSE) {
+                       save_edge = FALSE, save_face = FALSE, save_cens = FALSE,
+                       refresh = FALSE) {
 
     # for provided state and county, download the files ----
     cen_addr_feat <- download_cens_addr_feat(state_code, county_code)
@@ -106,6 +109,6 @@ gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2
     arrow::write_dataset(
         dataset = data_out,
         partitioning = c("state", "county"),
-        path = stringr::str_glue("{path}/year = {year}")
+        path = str_glue("{path}/year={year}")
     )
 }
