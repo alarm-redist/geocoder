@@ -4,25 +4,38 @@
 \alias{gc_prep_street_db}
 \title{Prepare Streets Database}
 \usage{
-gc_prep_street_db(county = NULL, state = NULL, zip = NULL)
+gc_prep_street_db(
+  data,
+  path = gc_cache_path(),
+  year = 2022,
+  save_shp = TRUE,
+  save_cens = FALSE,
+  refresh = FALSE
+)
 }
 \arguments{
-\item{county}{The county or counties to download address ranges for. Can be
-specified as a FIPS code or county name that will be partially matched to a
-list of all counties.}
+\item{data}{A data frame containing columns \code{state_code} and either
+\code{county_code} or \code{zip_code}, such as the output of  \code{\link[=gc_address]{gc_address()}}.}
 
-\item{state}{The state that the county belongs to. Partially matched to a
-list of all states.}
+\item{path}{The folder where the database will be stored. See
+\code{\link[=gc_cache_path]{gc_cache_path()}} and the README for more information.}
 
-\item{zip}{The ZIP code(s) to download address ranges for. Will be converted
-to a list of counties that cover all the provided ZIP codes.}
+\item{year}{The year to download data for.}
+
+\item{save_shp}{Whether to save road edge shapefile information. Needed to
+use \code{\link[=gc_code_pt]{gc_code_pt()}}.}
+
+\item{save_cens}{Whether to save additional Census geographies (school
+districts, NECTAs, etc.) for matching with \code{\link[=gc_code_block]{gc_code_block()}}.}
+
+\item{refresh}{If \code{TRUE}, force re-downloading of the Census data.}
 }
 \value{
-The path to the database, invisibly.
+The data, invisibly.
 }
 \description{
 Download and format address ranges from the Census TIGER/Line API, and then
-store in Arrow/GeoParquet format. One of \code{county} or \code{zip} must be provided.
+store in Arrow format. One of \code{county} or \code{zip} must be provided.
 }
 \examples{
 gc_prep_street_db(county = "Dare", state = "NC")
