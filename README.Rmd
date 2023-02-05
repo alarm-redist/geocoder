@@ -39,3 +39,7 @@ remotes::install_github("alarm-redist/geocoder")
 library(geocoder)
 ## basic example code
 ```
+
+## Cache
+
+Downloads will go to `options(geocoder.cache_dir)` if it is set. If it is not, and `options(geocoder.use_cache = TRUE)`, downloads will be cached between sessions in `rappdirs::user_cache_dir("geocoder")`. If If `options(geocoder.use_cache = FALSE)` (the default), then the cache will be in a temporary directory that does not persist between sessions. You can check the size of the cache and clear it with `gc_cache_size()` and `gc_cache_clear()`.
