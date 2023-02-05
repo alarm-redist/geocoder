@@ -52,17 +52,17 @@ download_cens_featnames <- function(state_fips, county_fips, year = 2022) {
         tibble::as_tibble()
 }
 
-download_cens_edges <- function(state_fips, county_fips, year = 2022) {
-    tf <- withr::local_tempfile(fileext = ".zip")
-    td <- withr::local_tempdir(pattern = stringr::str_glue("{year}_{state_fips}{county_fips}_edges_"))
-    curl::curl_download(
-        url = stringr::str_glue("https://www2.census.gov/geo/tiger/TIGER2022/EDGES/tl_{year}_{state_fips}{county_fips}_edges.zip"),
-        destfile = tf
-    )
-    utils::unzip(zipfile = tf, exdir = td)
-
-    sf::st_read(stringr::str_glue(paste0(td, "/tl_{year}_{state_fips}{county_fips}_edges.shp")), quiet = TRUE)
-}
+# download_cens_edges <- function(state_fips, county_fips, year = 2022) {
+#     tf <- withr::local_tempfile(fileext = ".zip")
+#     td <- withr::local_tempdir(pattern = stringr::str_glue("{year}_{state_fips}{county_fips}_edges_"))
+#     curl::curl_download(
+#         url = stringr::str_glue("https://www2.census.gov/geo/tiger/TIGER2022/EDGES/tl_{year}_{state_fips}{county_fips}_edges.zip"),
+#         destfile = tf
+#     )
+#     utils::unzip(zipfile = tf, exdir = td)
+#
+#     sf::st_read(stringr::str_glue(paste0(td, "/tl_{year}_{state_fips}{county_fips}_edges.shp")), quiet = TRUE)
+# }
 
 download_cens_faces <- function(state_fips, county_fips, year = 2022) {
     tf <- withr::local_tempfile(fileext = ".zip")

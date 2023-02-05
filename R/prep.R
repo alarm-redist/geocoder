@@ -19,7 +19,7 @@
 #' @returns The data, invisibly.
 #'
 #' @examples
-#' gc_prep_street_db(county = "Dare", state = "NC")
+#' gc_prep_street_db(data.frame(state_code="37", county_code="055"))
 #'
 #' @export
 gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
