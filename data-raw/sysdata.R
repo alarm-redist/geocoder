@@ -71,8 +71,8 @@ street_types <- rvest::read_html("https://pe.usps.com/text/pub28/28apc_002.htm")
 street_types <- bind_rows(
     street_types,
     tibble(type_std=street_types$type_std, type_in=street_types$type_std),
-    tibble(type_std=c("BLVD", "EXT",    "LOOP", "STRASSE", "ACRD", "PVT"),
-           type_in=c("BLVRD", "EXTENDED", "LP", "STRASSE", "ACRD", "PVT"))
+    tibble(type_std=c("BLVD", "EXT",    "LOOP", "STRASSE", "ACRD", "PVT", "ACC"),
+           type_in=c("BLVRD", "EXTENDED", "LP", "STRASSE", "ACRD", "PVT", "ACC"))
 ) |>
     arrange(type_std) |>
     distinct()

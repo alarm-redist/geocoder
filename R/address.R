@@ -109,6 +109,7 @@ parse_street <- function(address) {
 parse_street_only <- function(street) {
     out <- street |>
         str_remove(" ?\\(.+\\) ?") |>
+        str_replace("RD (\\d+)$", "RD \\1 RD") |>
         str_replace("RTE (\\d+)$", "RTE \\1 RTE") |>
         str_replace("HWY (\\d+)$", "HWY \\1 HWY") |>
         str_match(regex_street_only)
