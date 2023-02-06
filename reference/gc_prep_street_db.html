@@ -88,12 +88,12 @@ use <code><a href="gc_code.html">gc_code_pt()</a></code>.</p></dd>
 
 <dt>save_face</dt>
 <dd><p>Whether to save shapefile face information. Needed to
-use <code>gc_code_block()</code>.</p></dd>
+use <code><a href="gc_code.html">gc_code_block()</a></code>.</p></dd>
 
 
 <dt>save_cens</dt>
 <dd><p>Whether to save additional Census geographies (school
-districts, NECTAs, etc.) for matching with <code>gc_code_block()</code>. Only applies
+districts, NECTAs, etc.) for matching with <code><a href="gc_code.html">gc_code_block()</a></code>. Only applies
 if <code>save_face=TRUE</code>.</p></dd>
 
 
@@ -110,11 +110,10 @@ if <code>save_face=TRUE</code>.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># may take longer than 5 seconds</span></span></span>
 <span class="r-in"><span><span class="fu">gc_prep_street_db</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>state_code <span class="op">=</span> <span class="st">"37"</span>, county_code <span class="op">=</span> <span class="st">"055"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in gc_prep_street_db(data.frame(state_code = "37", county_code = "055")):</span> Can't subset `.data` outside of a data mask context.</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
