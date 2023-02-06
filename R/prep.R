@@ -105,7 +105,7 @@ gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2
                 "SUFDIRABRV", "SUFTYPABRV", "SUFQUALABR", "PREDIR", "PRETYP",
                 "PREQUAL", "SUFDIR", "SUFTYP", "SUFQUAL"
             ))
-        arrow::write_dataset(sf::st_drop_geometry(cen_featnames), outpath)
+        arrow::write_dataset(cen_featnames, outpath)
     }
 
 
@@ -134,7 +134,7 @@ gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2
                 "TFID", "state", "county", "tract", "block_group", "block"
             )
         }
-        arrow::write_dataset(sf::st_drop_geometry(cen_faces), outpath)
+        arrow::write_dataset(cen_faces, outpath)
     }
 
     # edges: tells us the geometry, TLID, TFIDL, TFIDR
