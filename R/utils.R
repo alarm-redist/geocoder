@@ -26,8 +26,8 @@ sort_long_short <- function(x) {
 #' @param county_code county fips
 db_path <- function(path, type, year, state_code, county_code) {
     if (missing(year)) {
-        str_glue("{path}/{type}")
+        stringr::str_glue("{path}/{type}")
     } else {
-        str_glue("{path}/{type}/year={year}/state={state_code}/county={county_code}")
+        stringr::str_glue("{path}/{type}/year={year}/state={state_code}/county={county_code}")
     }
 }

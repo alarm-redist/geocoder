@@ -33,15 +33,41 @@ gc_code_pt <- function(addresses, street_db = gc_download_path()) {
 
 #' Handles the internal joining
 #' @noRd
-gc_code_feat <- function(path = gc_cache_path(), state_code, county_code, year = 2022) {
+gc_code_feat <- function(addresses, path = gc_cache_path(), year = 2022) {
     # arrow open data set to load in the databases
     # filter to year and then do the merges
-
 
     addr_feat <- arrow::open_dataset(
         sources = db_path(
             path = path, type = 'addr_feat'
-        ),
+        )
     )
+
+    featnames <- arrow::open_dataset(
+        sources = db_path(
+            path = path, type = 'featnames'
+        )
+    )
+
+    cli::cli_abort('yikes: do not use this yet')
+    addresses <- addresses |>
+        dplyr::left_join(
+            y = featnames,
+            by = c(
+                state_code = 'state',
+                county_code = 'county',
+                zip_code = '',
+                num = '',
+                num_suff = '',
+                street_dir_pre = '',
+                street_name = 'NAME',
+                street_type = 'SUFTYP',
+                street_dir_suff = 'SUFDIR',
+                unit = '',
+                city = ''
+            )
+        )
+
+
 
 }
