@@ -39,7 +39,7 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
     need <- tibble()
 
     if (!is.na(col_idx[2])) { # get counties
-        need <- vctrs::vec_unique(data[1:2]) |>
+        need <- dplyr::distinct(.data$state_code, .data$county_code) |>
             dplyr::filter(!is.na(.data$state_code), !is.na(.data$county_code)) |>
             dplyr::bind_rows(need)
     }

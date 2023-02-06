@@ -18,6 +18,8 @@ Imports:
     rappdirs,
     withr,
     stringr,
+    curl,
+    foreign,
     arrow,
     dplyr,
     purrr,
