@@ -146,4 +146,6 @@ gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2
         dplyr::select(cen_addr_feat, "TLID", "geometry") |>
             saveRDS(str_c(outpath, "/edges.rds"), compress = TRUE)
     }
+
+    invisible(NULL)
 }
