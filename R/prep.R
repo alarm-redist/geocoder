@@ -39,7 +39,7 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
     need <- tibble()
 
     if (!is.na(col_idx[2])) { # get counties
-        need <- dplyr::distinct(.data$state_code, .data$county_code) |>
+        need <- dplyr::distinct(data, .data$state_code, .data$county_code) |>
             dplyr::filter(!is.na(.data$state_code), !is.na(.data$county_code)) |>
             dplyr::bind_rows(need)
     }
@@ -139,7 +139,10 @@ gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2
             isTRUE(refresh)
     )) {
         dir.create(outpath, showWarnings=FALSE, recursive=TRUE)
-        dplyr::select(cen_addr_feat, "TLID", "geometry") |>
+        cen_addr_feat |>
+            as_tibble() |>
+            dplyr::mutate(geometry = wk::as_wkb(.data$geometry)) |>
+            dplyr::select("TLID", "geometry") |>
             saveRDS(str_c(outpath, "/edges.rds"), compress = TRUE)
     }
 

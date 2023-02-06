@@ -44,6 +44,11 @@ gc_address <- function(data, address, city = NULL, zip = NULL, state = NULL, cou
         extr <- extract_state(address)
         address <- extr$address
         state <- extr$state
+        if (any(is.na(state[!is.na(address)]))) {
+            cli_abort(c("State information missing.",
+                        ">"="If states are not included in the {.var address} column,
+                        the state must be provided in the {.arg state} argument."))
+        }
     }
     state <- standardize_state(state)
     if (length(state) == 1) state <- rep(state, length(address))

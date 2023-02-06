@@ -23,15 +23,14 @@ Imports:
     arrow,
     dplyr,
     purrr,
+    geos,
+    wk,
     sf
+Suggests: 
+    tinytiger,
+    testthat (>= 3.0.0)
 URL: https://github.com/alarm-redist/geocoder,
     http://alarm-redist.org/geocoder/
 BugReports: https://github.com/alarm-redist/geocoder/issues
 LazyData: true
-Suggests: 
-    tinytiger,
-    testthat (>= 3.0.0)
 Config/testthat/edition: 3
-LinkingTo: 
-    cpp11
-SystemRequirements: C++11

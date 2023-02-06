@@ -8,7 +8,7 @@ na_if <- function(x, y) {
 }
 
 coalesce <- function(x, y) {
-    x[is.na(x)] <- y
+    x[is.na(x)] <- y[is.na(x)]
     x
 }
 
