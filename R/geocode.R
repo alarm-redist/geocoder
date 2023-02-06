@@ -30,3 +30,13 @@ gc_code_geo <- function(addresses, street_db = gc_download_path()) {
 #' @export
 gc_code_pt <- function(addresses, street_db = gc_download_path()) {
 }
+
+#' Handles the internal joining
+#' @noRd
+gc_code_feat <- function(path = gc_cache_path(), state_code, county_code, year = 2022) {
+    # arrow open data set to load in the databases
+    # filter to year and then do the merges
+
+
+
+}
