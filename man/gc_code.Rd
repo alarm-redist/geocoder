@@ -2,11 +2,11 @@
 % Please edit documentation in R/geocode.R
 \name{gc_code}
 \alias{gc_code}
-\alias{gc_code_geo}
+\alias{gc_code_block}
 \alias{gc_code_pt}
 \title{Geocode Addresses}
 \usage{
-gc_code_geo(addresses, street_db = gc_download_path())
+gc_code_block(addresses, street_db = gc_download_path())
 
 gc_code_pt(addresses, street_db = gc_download_path())
 }
@@ -16,20 +16,20 @@ gc_code_pt(addresses, street_db = gc_download_path())
 \item{street_db}{Path to the street database prepared by \code{\link[=gc_prep_street_db]{gc_prep_street_db()}}.}
 }
 \value{
-A data frame with a row for each input address. For \code{gc_code_geo()},
+A data frame with a row for each input address. For \code{gc_code_block()},
 the columns will report matched Census geographies at different levels.
-For \code{gc_code_geo()}, there will be one column, \code{geometry}, with POINT
+For \code{gc_code_block()}, there will be one column, \code{geometry}, with POINT
 geometries for each address.
 }
 \description{
 These functions efficiently geocode addresses and return either matched
-Census geographies (\code{gc_code_geo()}) or actual shapefile information
+Census geographies (\code{gc_code_block()}) or actual shapefile information
 (\code{gc_code_pt()}) with points for each address.
 }
 \examples{
 data(nc_addr)
 nc_addr |>
     gc_address(address, city, zip, state = "NC", county = county) |>
-    gc_code_geo()
+    gc_code_block()
 
 }
