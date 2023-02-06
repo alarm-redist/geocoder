@@ -38,8 +38,8 @@ download_cens_addr <- function(state_fips, county_fips, year = 2022) {
     utils::unzip(zipfile = tf, exdir = td)
 
     str_glue("{td}/tl_{year}_{state_fips}{county_fips}_addr.dbf") |>
-        foreign::read.dbf() |>
-        as_tibble()
+        foreign::read.dbf(as.is = TRUE) |>
+        tibble::as_tibble()
 }
 
 download_cens_featnames <- function(state_fips, county_fips, year = 2022) {
@@ -52,8 +52,8 @@ download_cens_featnames <- function(state_fips, county_fips, year = 2022) {
     utils::unzip(zipfile = tf, exdir = td)
 
     str_glue("{td}/tl_{year}_{state_fips}{county_fips}_featnames.dbf") |>
-        foreign::read.dbf() |>
-        as_tibble()
+        foreign::read.dbf(as.is = TRUE) |>
+        tibble::as_tibble()
 }
 
 # download_cens_edges <- function(state_fips, county_fips, year = 2022) {
@@ -77,7 +77,8 @@ download_cens_faces <- function(state_fips, county_fips, year = 2022) {
     )
     utils::unzip(zipfile = tf, exdir = td)
 
-    str_glue("{td}/tl_{year}_{state_fips}{county_fips}_faces.shp") |>
-        sf::read_sf(quiet = TRUE) |>
-        dplyr::mutate(dplyr::across(dplyr::where(is.numeric), as.integer))
+    str_glue("{td}/tl_{year}_{state_fips}{county_fips}_faces.dbf") |>
+        foreign::read.dbf(as.is = TRUE) |>
+        dplyr::mutate(dplyr::across(dplyr::where(is.numeric), as.integer)) |>
+        tibble::as_tibble()
 }
