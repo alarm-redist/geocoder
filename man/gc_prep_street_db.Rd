@@ -43,7 +43,7 @@ Download and format address ranges from the Census TIGER/Line API, and then
 store in Arrow format. One of \code{county} or \code{zip} must be provided.
 }
 \examples{
-\dontest{
+\donttest{
 # may take longer than 5 seconds
 gc_prep_street_db(data.frame(state_code = "37", county_code = "055"))
 }

@@ -19,7 +19,7 @@
 #'
 #' @returns The data, invisibly.
 #'
-#' @examples \dontest{
+#' @examples \donttest{
 #' # may take longer than 5 seconds
 #' gc_prep_street_db(data.frame(state_code = "37", county_code = "055"))
 #' }
