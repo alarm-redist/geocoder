@@ -19,8 +19,10 @@
 #'
 #' @returns The data, invisibly.
 #'
-#' @examples
+#' @examples \dontest{
+#' # may take longer than 5 seconds
 #' gc_prep_street_db(data.frame(state_code = "37", county_code = "055"))
+#' }
 #'
 #' @export
 gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,

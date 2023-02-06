@@ -8,7 +8,8 @@ gc_prep_street_db(
   data,
   path = gc_cache_path(),
   year = 2022,
-  save_shp = TRUE,
+  save_edge = TRUE,
+  save_face = TRUE,
   save_cens = FALSE,
   refresh = FALSE
 )
@@ -22,11 +23,15 @@ gc_prep_street_db(
 
 \item{year}{The year to download data for.}
 
-\item{save_shp}{Whether to save road edge shapefile information. Needed to
+\item{save_edge}{Whether to save road edge shapefile information. Needed to
 use \code{\link[=gc_code_pt]{gc_code_pt()}}.}
 
+\item{save_face}{Whether to save shapefile face information. Needed to
+use \code{\link[=gc_code_block]{gc_code_block()}}.}
+
 \item{save_cens}{Whether to save additional Census geographies (school
-districts, NECTAs, etc.) for matching with \code{\link[=gc_code_block]{gc_code_block()}}.}
+districts, NECTAs, etc.) for matching with \code{\link[=gc_code_block]{gc_code_block()}}. Only applies
+if \code{save_face=TRUE}.}
 
 \item{refresh}{If \code{TRUE}, force re-downloading of the Census data.}
 }
@@ -38,6 +43,9 @@ Download and format address ranges from the Census TIGER/Line API, and then
 store in Arrow format. One of \code{county} or \code{zip} must be provided.
 }
 \examples{
-gc_prep_street_db(county = "Dare", state = "NC")
+\dontest{
+# may take longer than 5 seconds
+gc_prep_street_db(data.frame(state_code = "37", county_code = "055"))
+}
 
 }
