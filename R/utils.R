@@ -15,3 +15,15 @@ coalesce <- function(x, y) {
 sort_long_short <- function(x) {
     x[order(nchar(x), x, decreasing = TRUE)]
 }
+
+#' Database path
+#' @noRd
+#'
+#' @param path defaults to `gc_cache_path()`
+#' @param type database you want (one of 'addr_feat', 'featnames', 'faces', 'edges')
+#' @param year integer year
+#' @param state_code state fips
+#' @param county_code county fips
+db_path <- function(path, type, year, state_code, county_code) {
+    str_glue("{path}/{type}/year={year}/state={state_code}/county={county_code}")
+}

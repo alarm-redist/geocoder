@@ -70,10 +70,6 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
     invisible(data)
 }
 
-db_path <- function(path, type, year, state_code, county_code) {
-    str_glue("{path}/{type}/year={year}/state={state_code}/county={county_code}")
-}
-
 #' workhorse function to make database
 #' @noRd
 #' @param state_code state fips
