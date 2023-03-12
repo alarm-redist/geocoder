@@ -32,7 +32,10 @@ test_that("street-city parser works correctly", {
              "1225 ST CHARLES ST ST LOUIS",
              "100 S SAINT ST E STE S ST LOUIS",
              "405 ST JOSEPH LN STE 400B ST LOUIS",
-             "3425 34TH AVE W APT 2 SEATTLE")
+             "3425 34TH AVE W APT 2 SEATTLE",
+             "220 HIGHLAND AVE GLEN RIDDLE",
+             "220 HIGHLAND AVE MEDIA",
+             "1202 GREEN GLEN RD VESTAVIA HILLS")
 
     actual = parse_street_city(addr)
     expected = tibble::tribble(
@@ -46,6 +49,9 @@ test_that("street-city parser works correctly", {
         100L,          NA,              "S",        "SAINT",         "ST",               "E",    "STE S",     "SAINT LOUIS",
         405L,          NA,              NA,    "ST JOSEPH",         "LN",               NA,  "STE 400B",       "SAINT LOUIS",
         3425L,         NA,              NA,          "34TH",        "AVE",              "W",    "APT 2",       "SEATTLE",
+        220L,          NA,              NA,      "HIGHLAND",        "AVE",              NA,          NA,       "GLEN RIDDLE",
+        220L,          NA,              NA,      "HIGHLAND",        "AVE",              NA,          NA,       "MEDIA",
+        1202L,         NA,              NA,    "GREEN GLEN",         "RD",              NA,          NA,    "VESTAVIA HILLS",
     )
 
     expect_equal(actual, expected)
