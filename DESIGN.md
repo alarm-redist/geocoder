@@ -13,6 +13,8 @@
 - `nc_addr`: Random 1,000 addresses from Dare County, NC voter file
 
 ## Address Parsing: `gc_address()`
+See [`address.R`](R/address.R)
+
 
 **Stage input:** data frame with column(s) containing unparsed addresses
 
@@ -24,7 +26,16 @@
 1. Parse street name, type, prefixes and suffixes, and house and unit numbers from remainder of address column
 1. Standardize county name and code, if provided in `county` argument
 
+For all steps, if we parse a component from the generic address column, we remove that component before the next step.
+Thus "1 OXFORD ST CAMBRIDGE MA 02138" becomes, in order:
+1. "1 OXFORD ST CAMBRIDGE MA 02138"
+1. "1 OXFORD ST CAMBRIDGE MA"
+1. "1 OXFORD ST CAMBRIDGE"
+1. "1 OXFORD ST"
+
 ## Data Download and Preparation `gc_prep_street_db()`
+See [`prep.R`](R/prep.R)
+
 
 **Stage input:**  tibble containing addresses standardized and parsed into columns
 
