@@ -21,7 +21,7 @@ d_addr |> # user's data, contains addresses
 #### Regular expressions
 We programatically build regexes for address parsing.
 Currently done in  [`zzz.R`](R/zzz.R) at load-time,
-but **TODO**: make these trie-based regexes because we are matching many options,
+but **TODO**: make these [trie-based](https://en.wikipedia.org/wiki/Trie) regexes because we are matching many options,
 and write code automatically to `R/` so that there is no load-time computation.
 
 
@@ -29,7 +29,7 @@ and write code automatically to `R/` so that there is no load-time computation.
 - `nc_addr`: Random 1,000 addresses from Dare County, NC voter file
 
 ## Address Parsing: `gc_address()`
-See [`address.R`](R/address.R)
+See [`address.R`](R/address.R); [test-address.R](tests/testthat/test-address.R)
 
 
 **Stage input:** data frame with column(s) containing unparsed addresses
@@ -49,8 +49,8 @@ Thus "1 OXFORD ST CAMBRIDGE MA 02138" becomes, in order:
 1. "1 OXFORD ST CAMBRIDGE"
 1. "1 OXFORD ST"
 
-## Data Download and Preparation `gc_prep_street_db()`
-See [`prep.R`](R/prep.R)
+## Data Download and Preparation: `gc_prep_street_db()`
+See [`prep.R`](R/prep.R); [test-prep.R](tests/testthat/test-prep.R)
 
 
 **Stage input:**  tibble containing addresses standardized and parsed into columns
@@ -58,16 +58,19 @@ See [`prep.R`](R/prep.R)
 **Stage output:** same as input (invisibly). As side effect, downloads and organizes Census street and address data
 
 1. Build a list of county FIPS codes we need data for. This is a concatenation of:
-    a. Counties in address tibble
-    b. Counties crosswalked from ZIP codes
-    c. **TODO**: if no counties or ZIPs, get all counties in state. Consider doing this anyway as xwalk may not be complete
+    1. Counties in address tibble
+    1. Counties crosswalked from ZIP codes
+    1. **TODO**: if no counties or ZIPs, get all counties in state. Consider doing this anyway as xwalk may not be complete
 1. Download data for each county:
-    a. Download Census `EDGES`, `FACES`, `ADDRFEAT`, and `FEATNAMES` files
-    b. Subset to appropriate columns and parse appropriate types
-    c. Save as parquet (or rds for the one geo column in `EDGES`)
+    1. Download Census `EDGES`, `FACES`, `ADDRFEAT`, and `FEATNAMES` files
+    1. Subset to appropriate columns and parse appropriate types
+    1. Save as parquet (or rds for the one geo column in `EDGES`)
 
-## Joining Addresses to Streets and Address Ranges
+## Joining Addresses to Streets and Address Ranges: `gc_code_feat()` [internal]
+See [`geocode.R`](R/geocode.R)
 
-## Geocoding Points
+## Geocoding Points: `gc_prep_street_db()`
+See [`geocode.R`](R/geocode.R)
 
-## Geocoding Census Geographies
+## Geocoding Census Geographies: `gc_prep_street_db()`
+See [`geocode.R`](R/geocode.R)
