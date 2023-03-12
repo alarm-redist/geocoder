@@ -54,20 +54,25 @@ build_save_rgx <- function() {
     regex_street_types <- "{esc(regex_street_types)}"
     regex_street_dirs <- "{esc(regex_street_dirs)}"
     regex_street_dirs_short <- "{esc(regex_street_dirs_short)}"
-    regex_street_city <- "{esc(regex_street_city)}"
-    regex_street <- "{esc(regex_street)}"
-    regex_street_only <- "{esc(regex_street_only)}"
+    regex_street_city <- ""
+    regex_street <- ""
+    regex_street_only <- ""
     regex_unit <- "{esc(regex_unit)}"
     regex_city <- "{esc(regex_city)}"
     regex_saints <- "{esc(regex_saints)}"
-    regex_poss_saint <- "{esc(regex_poss_saint)}"
+    regex_poss_saint <- ""
     ')
+    # regex_street_city <- "{esc(regex_street_city)}"
+    # regex_street <- "{esc(regex_street)}"
+    # regex_street_only <- "{esc(regex_street_only)}"
+    # regex_poss_saint <- "{esc(regex_poss_saint)}"
 
     cat(out, file="R/regexes.R", append=FALSE)
 }
 
 
 # make a regex trie
+# adapted from <https://gist.github.com/vi3k6i5/e3de8313bf1416830f8ab310288e2a50>
 rgx_trie <- function(x, escape=TRUE, group=FALSE, reverse=FALSE) {
     pdata = new.env()
     for (patt in x) {
@@ -100,11 +105,11 @@ rgx_trie <- function(x, escape=TRUE, group=FALSE, reverse=FALSE) {
                 if (is.null(recurse)) {
                     chr_rgx = c(chr_rgx, k)
                 } else {
-                    # if (isFALSE(reverse)) {
+                    if (isFALSE(reverse)) {
                         sub_rgx = c(sub_rgx, list(c(k, recurse)))
-                    # } else {
-                        # sub_rgx = c(list(c(recurse, k)), sub_rgx)
-                    # }
+                    } else {
+                        sub_rgx = c(list(c(recurse, k)), sub_rgx)
+                    }
                 }
             } else {
                 terminal = TRUE
@@ -204,23 +209,23 @@ test_trie <- function() {
     # TIMING
     # x = sample(c(toupper(state.name), state.abb, state.name), 1e5, replace=TRUE)
     # x = sample(c(street_types$type_in, state.name), 1e5, replace=TRUE)
-    x = sample(c(regex_street_dirs, state.name), 1e5, replace=TRUE)
+    # x = sample(c(regex_street_dirs, state.name), 1e5, replace=TRUE)
 
     # dict = states$state_in
     # dict = street_types$type_in
-    dict = regex_street_dirs
-    regex1 <- str_c("\\b", rgx_trie(dict, group=TRUE), "$")
-    regex2 <- str_c("\\b", rgx_trie(dict, group=TRUE, reverse=TRUE), "$")
-    regex0 <- dict |>
-            sort_long_short() |>
-            # str_c("\\b", mid = _, "$", collapse = "|") |>
-            str_flatten(collapse = "|") |>
-            str_replace_all("\\.", "\\\\.") |>
-            str_c("\\b(", mid = _, ")$")
-
-    bench::mark(
-        str_extract(x, regex1),
-        stringi::stri_reverse(str_extract(stringi::stri_reverse(x), regex2)),
-        str_extract(x, regex0)
-    )
+    # dict = regex_street_dirs
+    # regex1 <- str_c("\\b", rgx_trie(dict, group=TRUE), "$")
+    # regex2 <- str_c("\\b", rgx_trie(dict, group=TRUE, reverse=TRUE), "$")
+    # regex0 <- dict |>
+    #         sort_long_short() |>
+    #         # str_c("\\b", mid = _, "$", collapse = "|") |>
+    #         str_flatten(collapse = "|") |>
+    #         str_replace_all("\\.", "\\\\.") |>
+    #         str_c("\\b(", mid = _, ")$")
+    #
+    # bench::mark(
+    #     str_extract(x, regex1),
+    #     stringi::stri_reverse(str_extract(stringi::stri_reverse(x), regex2)),
+    #     str_extract(x, regex0)
+    # )
 }
