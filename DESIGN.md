@@ -1,15 +1,31 @@
 # Parsing and Geocoding Strategy
 
+The modal user-facing workflow we are aiming for:
+
+```r
+d_addr |> # user's data, contains addresses
+    gc_address(address, zip=zip_code, state="PA") |>
+    gc_prep_street_db() |> 
+    gc_code_pt() # or gc_code_block()
+```
+
 ## Package data
 
-#### Internal
+#### Internal (see [`sysdata.R`](data-raw/sysdata.R))
 - `states`: FIPS lookup (full name, postal code, and AP abbreviation)
 - `counties`: FIPS lookup
 - `county_zip_code`: ZIP->county lookup built from HUD crosswalk. **TODO** get reverse crosswalk data and build in the other direction
 - `street_dirs`: standardized street direction lookup
 - `street_types`: standardized street type lookup
 
-#### User-facing
+#### Regular expressions
+We programatically build regexes for address parsing.
+Currently done in  [`zzz.R`](R/zzz.R) at load-time,
+but **TODO**: make these trie-based regexes because we are matching many options,
+and write code automatically to `R/` so that there is no load-time computation.
+
+
+#### User-facing (see [`nc_addr.R`](data-raw/nc_addr.R))
 - `nc_addr`: Random 1,000 addresses from Dare County, NC voter file
 
 ## Address Parsing: `gc_address()`
