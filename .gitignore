@@ -16,5 +16,6 @@ docs
 !data/*.rda
 data-raw/*
 !data-raw/*.R
+!inst/extdata/*.rds
 
 *_cache
