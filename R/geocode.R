@@ -34,39 +34,52 @@ gc_code_pt <- function(addresses, street_db = gc_download_path()) {
 #' Handles the internal joining
 #' @noRd
 gc_code_feat <- function(addresses, path = gc_cache_path(), year = 2022) {
+    addresses <- arrow::arrow_table(addresses)
     # arrow open data set to load in the databases
     # filter to year and then do the merges
 
     addr_feat <- arrow::open_dataset(
-        sources = db_path(
-            path = path, type = 'addr_feat'
+        sources = db_path(path, "addr_feat"),
+        schema = arrow::schema(
+            year = int32(), state = utf8(), county = utf8(),
+            TLID = int32(), TFIDL = int32(), TFIDR = int32(), LFROMHN = utf8(),
+            LTOHN = utf8(), RFROMHN = utf8(), RTOHN = utf8(), ZIPL = utf8(),
+            ZIPR = utf8(), PARITYL = utf8(), PARITYR = utf8(), PLUS4L = utf8(),
+            PLUS4R = utf8()
         )
     )
-
     featnames <- arrow::open_dataset(
-        sources = db_path(
-            path = path, type = 'featnames'
+        sources = db_path(path, "featnames"),
+        schema = arrow::schema(
+            year = int32(), state = utf8(), county = utf8(),
+            TLID = int32(), FULLNAME = utf8(), NAME = utf8(), PREDIRABRV = utf8(),
+            PRETYPABRV = utf8(), PREQUALABR = utf8(), SUFDIRABRV = utf8(),
+            SUFTYPABRV = utf8(), SUFQUALABR = utf8(), PREDIR = utf8(),
+            PRETYP = utf8(), PREQUAL = utf8(), SUFDIR = utf8(), SUFTYP = utf8(),
+            SUFQUAL = utf8()
         )
     )
 
-    cli::cli_abort('yikes: do not use this yet')
-    addresses <- addresses |>
+    cli::cli_abort("yikes: do not use this yet")
+    # addresses <- addresses |>
+    addresses |>
         dplyr::left_join(
             y = featnames,
             by = c(
-                state_code = 'state',
-                county_code = 'county',
-                zip_code = '',
-                num = '',
-                num_suff = '',
-                street_dir_pre = '',
-                street_name = 'NAME',
-                street_type = 'SUFTYP',
-                street_dir_suff = 'SUFDIR',
-                unit = '',
-                city = ''
-            )
-        )
+                state_code = "state",
+                county_code = "county"
+                # zip_code = "",
+                # num = "",
+                # num_suff = "",
+                # street_dir_pre = "",
+                # street_name = "NAME",
+                # street_type = "SUFTYP",
+                # street_dir_suff = "SUFDIR"
+                # unit = "",
+                # city = ""
+            ),
+        ) |>
+        dplyr::collect()
 
 
 

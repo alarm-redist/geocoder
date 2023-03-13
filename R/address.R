@@ -26,7 +26,8 @@ gc_address <- function(data, address, city = NULL, zip = NULL, state = NULL, cou
     address <- eval_tidy(enquo(address), data)
     if (!is.character(address)) cli_abort("{.arg address} must be a character vector")
     address <- address |>
-        str_replace_all(",", " ") |> # remove commas
+        str_remove_all(fixed("'")) |> # remove apostrophes
+        str_replace_all(fixed(","), " ") |> # remove commas
         str_to_upper() |>
         str_squish()
 
@@ -55,11 +56,15 @@ gc_address <- function(data, address, city = NULL, zip = NULL, state = NULL, cou
 
     city <- eval_tidy(enquo(city), data)
     if (is.null(city)) {
-        out <- parse_street_city(address)
+        extr <- extract_city(address)
+        address <- extr$address
+        city <- extr$city
     } else {
-        out <- parse_street(address)
-        out$city <- str_replace(city, regex_saints, "SAINT \\1")
+        city <- str_replace(city, regex_saints, "SAINT \\1")
     }
+
+    # parse street
+    out <- parse_street(address)
 
     county <- eval_tidy(enquo(county), data)
     if (!is.null(county)) {
@@ -70,13 +75,35 @@ gc_address <- function(data, address, city = NULL, zip = NULL, state = NULL, cou
     if (length(county) == 1) county <- rep(county, length(address))
 
     as_tibble(cbind(
-        tibble(state_code = state, county_code = county, zip_code = zip),
+        tibble(state_code = state, county_code = county, zip_code = zip, city = city),
         out
     ))
 }
 
+extract_city <- function(address) {
+    regex_path <- system.file("extdata/city_regex.rds", package="geocoder")
+    regex_city <- str_c("\\b", readRDS(regex_path), "$")
+    address <- address |>
+        str_replace(regex_poss_saint, "\\1\\2\\4 SAINT ") |>
+        str_replace(regex_saints, "SAINT \\1")
+    idx <- str_locate(address, regex_city)
+    part_1 <- str_trim(str_sub(address, 1, idx[, 1] - 1L))
+
+    list(
+        address = coalesce(part_1, address),
+        city = str_sub(address, idx)
+    )
+}
+
 # Streets and Cities ------
 parse_street_city <- function(address) {
+    regex_city <- readRDS(system.file("extdata/city_regex.rds", package="geocoder"))
+    regex_street_city <<- str_glue(
+        "^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+?) ",
+        "(?:{regex_street_types})\\.?(?: {regex_street_dirs_short})?\\.?",
+        "( {regex_unit})?((?: \\S+)+)$"
+    )
+
     out <- address |>
         str_replace(regex_poss_saint, "\\1\\2\\4 SAINT ") |>
         str_replace(regex_saints, "SAINT \\1") |>
@@ -94,6 +121,11 @@ parse_street_city <- function(address) {
 }
 
 parse_street <- function(address) {
+    regex_street <- str_glue(
+        "^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+) ",
+        "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?( {regex_unit})?(?: [A-Z]+)*$"
+    )
+
     out <- str_match(address, regex_street)
     tibble(
         num = as.integer(out[, 2]),
@@ -107,6 +139,11 @@ parse_street <- function(address) {
 }
 
 parse_street_only <- function(street) {
+    regex_street_only <- str_glue(
+        "^(?:{regex_street_dirs} )?\\.?(\\S+(?: \\S+)*) ",
+        "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?$"
+    )
+
     out <- street |>
         str_remove(" ?\\(.+\\) ?") |>
         str_replace("RD (\\d+)$", "RD \\1 RD") |>

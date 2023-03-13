@@ -40,15 +40,6 @@ counties <- as_tibble(tinytiger::county_fips_2020) |>
               county_name = str_to_upper(name))
 
 
-path <- 'data-raw/ZIP_COUNTY.xlsx'
-curl::curl_download("https://www.huduser.gov/portal/datasets/usps/ZIP_COUNTY_122021.xlsx", path)
-county_zip_code <- readxl::read_excel(path) |>
-    transmute(
-        state_code = str_sub(county, 1, 2),
-        county_code = str_sub(county, 3, 5),
-        zip_code = zip
-    )
-
 street_dirs <- tibble(
     dir_std = c("E","E","E","N","N","N",
                 "NE","NE","NE","NE","NW","NW","NW","NW","NW","S",
@@ -74,10 +65,10 @@ street_types <- bind_rows(
     tibble(type_std=c("BLVD", "EXT",    "LOOP", "STRASSE", "ACRD", "PVT", "ACC"),
            type_in=c("BLVRD", "EXTENDED", "LP", "STRASSE", "ACRD", "PVT", "ACC"))
 ) |>
-    arrange(type_std) |>
+    arrange(type_std, desc(str_length(type_in))) |>
     distinct()
 
 
-usethis::use_data(states, counties, county_zip_code, street_dirs, street_types,
+usethis::use_data(states, counties, street_dirs, street_types,
                   internal=TRUE, overwrite=TRUE, compress="xz")
 

@@ -24,20 +24,8 @@ build_save_rgx <- function() {
     )
     regex_poss_saint <- str_glue("\\b(?:{regex_street_types})\\.?( {regex_street_dirs})?\\.?( {regex_unit})? ST\\.? ")
 
-    regex_saints <- str_c(
-        "ST\\.? (AGATHA|ALBANS|ALBANS BAY|AMANT|ANN|ANNE|ANSGAR|AUGUSTINE|",
-        "BONAVENTURE|BONIFACE|BONIFACIUS|CHARLES|",
-        "CLAIR|CLAIR SHORES|CLAIRSVILLE|CLOUD|COLUMBANS|CROIX|CROIX FALLS|",
-        "DONATUS|FRANCISVILLE|GABRIEL|GENEVIEVE|",
-        "GEORGE ISLAND|GEORGES|GERMAIN|HEDWIG|HELENA ISLAND|HELENS|",
-        "HILAIRE|IGNACE|IGNATIUS|INIGOES|JAMES|JO|JOE|JOHN|",
-        "JOHNS|JOHNSBURY|JOHNSBURY CENTER|JOHNSVILLE|LANDRY|",
-        "LIBORY|LOUIS|MAGDALEN|MARIE|MARIE|MARIES|",
-        "MARTINVILLE|MARY|MARY OF THE WOODS|MARYS|MARYS CITY|MEINRAD|",
-        "MICHAELS|NAZIANZ|OLAF|ONGE|PAUL|PAUL ISLAND|PAUL PARK|",
-        "PAULS|PETER|PETERS|PHILLIP|REGIS|REGIS FALLS|SIMONS ISLAND|",
-        "STEPHENS CHURCH|URBANS|VINCENT|VRAIN|XAVIER)$"
-    )
+    saints = read_rds(here("data-raw/saints.rds"))
+    regex_saints <- str_c("ST\\.? ", rgx_trie(saints, escape=FALSE, group=TRUE), "$")
 
     esc <- function(x) {
         x |>
@@ -54,9 +42,6 @@ build_save_rgx <- function() {
     regex_street_types <- "{esc(regex_street_types)}"
     regex_street_dirs <- "{esc(regex_street_dirs)}"
     regex_street_dirs_short <- "{esc(regex_street_dirs_short)}"
-    regex_street_city <- ""
-    regex_street <- ""
-    regex_street_only <- ""
     regex_unit <- "{esc(regex_unit)}"
     regex_city <- "{esc(regex_city)}"
     regex_saints <- "{esc(regex_saints)}"
