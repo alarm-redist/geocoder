@@ -46,30 +46,23 @@
 
 <div id="parsing-and-geocoding-strategy" class="section level1">
 
+<p>The modal user-facing workflow we are aiming for:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">d_addr</span> <span class="op">|&gt;</span> <span class="co"># user's data, contains addresses</span></span>
+<span>    <span class="fu"><a href="reference/gc_address.html">gc_address</a></span><span class="op">(</span><span class="va">address</span>, zip<span class="op">=</span><span class="va">zip_code</span>, state<span class="op">=</span><span class="st">"PA"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>    <span class="fu"><a href="reference/gc_prep_street_db.html">gc_prep_street_db</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>    <span class="fu"><a href="reference/gc_code.html">gc_code_pt</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># or gc_code_block()</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="package-data">Package data<a class="anchor" aria-label="anchor" href="#package-data"></a></h2>
-<div class="section level4">
-<h4 id="internal">Internal<a class="anchor" aria-label="anchor" href="#internal"></a></h4>
-<ul><li>
-<code>states</code>: FIPS lookup (full name, postal code, and AP abbreviation)</li>
-<li>
-<code>counties</code>: FIPS lookup</li>
-<li>
-<code>county_zip_code</code>: ZIP-&gt;county lookup built from HUD crosswalk. <strong>TODO</strong> get reverse crosswalk data and build in the other direction</li>
-<li>
-<code>street_dirs</code>: standardized street direction lookup</li>
-<li>
-<code>street_types</code>: standardized street type lookup</li>
-</ul></div>
-<div class="section level4">
-<h4 id="user-facing">User-facing<a class="anchor" aria-label="anchor" href="#user-facing"></a></h4>
-<ul><li>
-<code>nc_addr</code>: Random 1,000 addresses from Dare County, NC voter file</li>
-</ul></div>
+<p><strong>Internal</strong> (see <a href="data-raw/sysdata.R"><code>sysdata.R</code></a>) - <code>states</code>: FIPS lookup (full name, postal code, and AP abbreviation) - <code>counties</code>: FIPS lookup - <code>county_zip_code</code>: ZIP-&gt;county lookup built from HUD crosswalk. <strong>TODO</strong> get reverse crosswalk data and build in the other direction - <code>street_dirs</code>: standardized street direction lookup - <code>street_types</code>: standardized street type lookup</p>
+<p><strong>Regular expressions</strong></p>
+<p>We programatically build regexes for address parsing. Currently done in <a href="R/zzz.R"><code>zzz.R</code></a> at load-time, but <strong>TODO</strong>: make these <a href="https://en.wikipedia.org/wiki/Trie" class="external-link">trie-based</a> regexes because we are matching many options, and write code automatically to <code>R/</code> so that there is no load-time computation.</p>
+<p><strong>User-facing</strong> (see <a href="data-raw/nc_addr.R"><code>nc_addr.R</code></a>) - <code>nc_addr</code>: Random 1,000 addresses from Dare County, NC voter file</p>
 </div>
 <div class="section level2">
 <h2 id="address-parsing-gc_address">Address Parsing: <code>gc_address()</code>
 <a class="anchor" aria-label="anchor" href="#address-parsing-gc_address"></a></h2>
+<p>See <a href="R/address.R"><code>address.R</code></a>; <a href="tests/testthat/test-address.R"><code>test-address.R</code></a></p>
 <p><strong>Stage input:</strong> data frame with column(s) containing unparsed addresses</p>
 <p><strong>Stage output:</strong> tibble containing addresses standardized and parsed into columns</p>
 <ol style="list-style-type: decimal"><li>Check for ZIP codes, first from <code>zip</code> argument and then by regex on generic address column</li>
@@ -77,32 +70,39 @@
 <li>Check for city names, first from <code>city</code> argument and then from dictionary-based regex at end of generic address column</li>
 <li>Parse street name, type, prefixes and suffixes, and house and unit numbers from remainder of address column</li>
 <li>Standardize county name and code, if provided in <code>county</code> argument</li>
-</ol></div>
+</ol><p>For all steps, if we parse a component from the generic address column, we remove that component before the next step. Thus “1 OXFORD ST CAMBRIDGE MA 02138” becomes, in order: 1. “1 OXFORD ST CAMBRIDGE MA 02138” 1. “1 OXFORD ST CAMBRIDGE MA” 1. “1 OXFORD ST CAMBRIDGE” 1. “1 OXFORD ST”</p>
+</div>
 <div class="section level2">
-<h2 id="data-download-and-preparation-gc_prep_street_db">Data Download and Preparation <code>gc_prep_street_db()</code>
+<h2 id="data-download-and-preparation-gc_prep_street_db">Data Download and Preparation: <code>gc_prep_street_db()</code>
 <a class="anchor" aria-label="anchor" href="#data-download-and-preparation-gc_prep_street_db"></a></h2>
+<p>See <a href="R/prep.R"><code>prep.R</code></a>; <a href="tests/testthat/test-prep.R"><code>test-prep.R</code></a></p>
 <p><strong>Stage input:</strong> tibble containing addresses standardized and parsed into columns</p>
 <p><strong>Stage output:</strong> same as input (invisibly). As side effect, downloads and organizes Census street and address data</p>
 <ol style="list-style-type: decimal"><li>Build a list of county FIPS codes we need data for. This is a concatenation of:
-<ol style="list-style-type: lower-alpha"><li>Counties in address tibble</li>
+<ol style="list-style-type: decimal"><li>Counties in address tibble</li>
 <li>Counties crosswalked from ZIP codes</li>
 <li>
 <strong>TODO</strong>: if no counties or ZIPs, get all counties in state. Consider doing this anyway as xwalk may not be complete</li>
 </ol></li>
 <li>Download data for each county:
-<ol style="list-style-type: lower-alpha"><li>Download Census <code>EDGES</code>, <code>FACES</code>, <code>ADDRFEAT</code>, and <code>FEATNAMES</code> files</li>
+<ol style="list-style-type: decimal"><li>Download Census <code>EDGES</code>, <code>FACES</code>, <code>ADDRFEAT</code>, and <code>FEATNAMES</code> files</li>
 <li>Subset to appropriate columns and parse appropriate types</li>
 <li>Save as parquet (or rds for the one geo column in <code>EDGES</code>)</li>
 </ol></li>
 </ol></div>
 <div class="section level2">
-<h2 id="joining-addresses-to-streets-and-address-ranges">Joining Addresses to Streets and Address Ranges<a class="anchor" aria-label="anchor" href="#joining-addresses-to-streets-and-address-ranges"></a></h2>
+<h2 id="joining-addresses-to-streets-and-address-ranges-gc_code_feat-internal">Joining Addresses to Streets and Address Ranges: <code>gc_code_feat()</code> [internal]<a class="anchor" aria-label="anchor" href="#joining-addresses-to-streets-and-address-ranges-gc_code_feat-internal"></a></h2>
+<p>See <a href="R/geocode.R"><code>geocode.R</code></a></p>
 </div>
 <div class="section level2">
-<h2 id="geocoding-points">Geocoding Points<a class="anchor" aria-label="anchor" href="#geocoding-points"></a></h2>
+<h2 id="geocoding-points-gc_prep_street_db">Geocoding Points: <code>gc_prep_street_db()</code>
+<a class="anchor" aria-label="anchor" href="#geocoding-points-gc_prep_street_db"></a></h2>
+<p>See <a href="R/geocode.R"><code>geocode.R</code></a></p>
 </div>
 <div class="section level2">
-<h2 id="geocoding-census-geographies">Geocoding Census Geographies<a class="anchor" aria-label="anchor" href="#geocoding-census-geographies"></a></h2>
+<h2 id="geocoding-census-geographies-gc_prep_street_db">Geocoding Census Geographies: <code>gc_prep_street_db()</code>
+<a class="anchor" aria-label="anchor" href="#geocoding-census-geographies-gc_prep_street_db"></a></h2>
+<p>See <a href="R/geocode.R"><code>geocode.R</code></a></p>
 </div>
 </div>
 
