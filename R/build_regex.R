@@ -7,8 +7,6 @@ build_save_rgx <- function() {
     regex_street_dirs_short <- rgx_trie(street_dirs$dir_in[which_short], group=TRUE)
     regex_unit <- "(?:APT |APARTMENT |UNIT |SUITE |# ?|NO\\.? |STE\\.? )[0-9A-Z]+"
 
-    regex_city = str_c("\\b", rgx_trie(na.omit(unique(nc_addr$city)), group=TRUE), "$")
-
     regex_street_city <- str_glue(
         "^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+?) ",
         "(?:{regex_street_types})\\.?(?: {regex_street_dirs_short})?\\.?",
@@ -43,7 +41,6 @@ build_save_rgx <- function() {
     regex_street_dirs <- "{esc(regex_street_dirs)}"
     regex_street_dirs_short <- "{esc(regex_street_dirs_short)}"
     regex_unit <- "{esc(regex_unit)}"
-    regex_city <- "{esc(regex_city)}"
     regex_saints <- "{esc(regex_saints)}"
     regex_poss_saint <- ""
     ')
