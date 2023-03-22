@@ -54,9 +54,10 @@
 <span>    <span class="fu"><a href="reference/gc_code.html">gc_code_pt</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># or gc_code_block()</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="package-data">Package data<a class="anchor" aria-label="anchor" href="#package-data"></a></h2>
-<p><strong>Internal</strong> (see <a href="data-raw/sysdata.R"><code>sysdata.R</code></a>) - <code>states</code>: FIPS lookup (full name, postal code, and AP abbreviation) - <code>counties</code>: FIPS lookup - <code>county_zip_code</code>: ZIP-&gt;county lookup built from HUD crosswalk. <strong>TODO</strong> get reverse crosswalk data and build in the other direction - <code>street_dirs</code>: standardized street direction lookup - <code>street_types</code>: standardized street type lookup</p>
+<p><strong>Internal</strong> (see <a href="data-raw/sysdata.R"><code>sysdata.R</code></a>) - <code>states</code>: FIPS lookup (full name, postal code, and AP abbreviation) - <code>counties</code>: FIPS lookup - <code>street_dirs</code>: standardized street direction lookup - <code>street_types</code>: standardized street type lookup</p>
+<p><strong>Larger internal</strong> (see <a href="data-raw/city_zip_county.R"><code>city_zip_county.R</code></a>) - <code>city_zip_county.rds</code>: ZIP/county/city combinations table built from HUD crosswalks, ZIP database, and USGS GNIS. - <code>city_regex.rds</code>: trie-ified regex matching all city names in <code>city_zip_county</code> table</p>
 <p><strong>Regular expressions</strong></p>
-<p>We programatically build regexes for address parsing. Currently done in <a href="R/zzz.R"><code>zzz.R</code></a> at load-time, but <strong>TODO</strong>: make these <a href="https://en.wikipedia.org/wiki/Trie" class="external-link">trie-based</a> regexes because we are matching many options, and write code automatically to <code>R/</code> so that there is no load-time computation.</p>
+<p>We programatically build regexes for address parsing. These are pre-built in <a href="R/build_regex.R"><code>build_regex.R</code></a>, with some higher-level regexes constructed on-the-fly. Larger regexes are <a href="https://en.wikipedia.org/wiki/Trie" class="external-link">trie-based</a> regexes because we are matching many options. See also <code>city_regex.rds</code> above.</p>
 <p><strong>User-facing</strong> (see <a href="data-raw/nc_addr.R"><code>nc_addr.R</code></a>) - <code>nc_addr</code>: Random 1,000 addresses from Dare County, NC voter file</p>
 </div>
 <div class="section level2">
