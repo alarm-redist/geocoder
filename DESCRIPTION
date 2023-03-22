@@ -15,7 +15,6 @@ Imports:
     rlang,
     tibble,
     cli,
-    rappdirs,
     withr,
     stringr,
     curl,

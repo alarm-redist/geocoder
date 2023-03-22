@@ -4,6 +4,7 @@
 ## usethis namespace: start
 #' @import stringr
 #' @import tibble
+#' @importFrom tools R_user_dir
 #' @importFrom cli cli_abort cli_warn cli_inform
 #' @importFrom rlang eval_tidy enquo
 #' @importFrom arrow int32 utf8

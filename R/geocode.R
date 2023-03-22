@@ -68,7 +68,7 @@ gc_code_feat <- function(addresses, path = gc_cache_path(), year = 2022) {
             by = c(
                 state_code = "state",
                 county_code = "county"
-                # zip_code = "",
+                # zip = "",
                 # num = "",
                 # num_suff = "",
                 # street_dir_pre = "",

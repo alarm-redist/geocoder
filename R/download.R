@@ -6,7 +6,7 @@ gc_download_path <- function() {
     if (!is.null(user_cache)) {
         user_cache
     } else if (getOption("geocoder.use_cache", FALSE)) {
-        rappdirs::user_cache_dir("geocoder")
+        R_user_dir("geocoder", which="cache")
     } else {
         tempdir()
     }

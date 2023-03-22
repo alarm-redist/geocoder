@@ -75,7 +75,7 @@ gc_address <- function(data, address, city = NULL, zip = NULL, state = NULL, cou
     if (length(county) == 1) county <- rep(county, length(address))
 
     as_tibble(cbind(
-        tibble(state_code = state, county_code = county, zip_code = zip, city = city),
+        tibble(state_code = state, county_code = county, zip = zip, city = city),
         out
     ))
 }
