@@ -59,7 +59,8 @@ test_that("street-only parser works correctly", {
              "405 ST JOSEPH LN STE 400B",
              "3425 34TH AVE W APT 2",
              "1202 GREEN GLEN RD",
-             "12345 MAIN ST NOTATOWN")
+             "12345 MAIN ST NOTATOWN",
+             "110 ROUTE 303")
 
     actual = parse_street(addr)
     expected = tibble::tribble(
@@ -75,6 +76,7 @@ test_that("street-only parser works correctly", {
         3425L,         NA,              NA,          "34TH",        "AVE",              "W",    "APT 2",
         1202L,         NA,              NA,    "GREEN GLEN",        "RD",              NA,         NA,
         12345L,        NA,              NA,         "MAIN",         "ST",              NA,         NA,
+        110L,          NA,              NA,      "RTE 303",        "RTE",              NA,         NA
     )
 
     expect_equal(actual, expected)
