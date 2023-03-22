@@ -16,7 +16,7 @@ gc_prep_street_db(
 }
 \arguments{
 \item{data}{A data frame containing columns \code{state_code} and either
-\code{county_code} or \code{zip_code}, such as the output of  \code{\link[=gc_address]{gc_address()}}.}
+\code{county_code}, \code{zip}, or \code{city}, such as the output of  \code{\link[=gc_address]{gc_address()}}.}
 
 \item{path}{The folder where the database will be stored. See
 \code{\link[=gc_cache_path]{gc_cache_path()}} and the README for more information.}
@@ -46,6 +46,8 @@ store in Arrow format. One of \code{county} or \code{zip} must be provided.
 \donttest{
 # may take longer than 5 seconds
 gc_prep_street_db(data.frame(state_code = "37", county_code = "055"))
+gc_prep_street_db(data.frame(state_code = "37", county_code = "055",
+                             zip = "27920", city = "Buxton"))
 }
 
 }
