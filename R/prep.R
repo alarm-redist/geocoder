@@ -4,7 +4,7 @@
 #' store in Arrow format. One of `county` or `zip` must be provided.
 #'
 #' @param data A data frame containing columns `state_code` and either
-#'   `county_code` or `zip_code`, such as the output of  [gc_address()].
+#'   `county_code`, `zip`, or `city`, such as the output of  [gc_address()].
 #' @param path The folder where the database will be stored. See
 #'   [gc_cache_path()] and the README for more information.
 #' @param year The year to download data for.
@@ -22,18 +22,20 @@
 #' @examples \donttest{
 #' # may take longer than 5 seconds
 #' gc_prep_street_db(data.frame(state_code = "37", county_code = "055"))
+#' gc_prep_street_db(data.frame(state_code = "37", county_code = "055",
+#'                              zip = "27920", city = "Buxton"))
 #' }
 #'
 #' @export
 gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
                               save_edge = TRUE, save_face = TRUE, save_cens = FALSE,
                               refresh = FALSE) {
-    col_idx <- match(c("state_code", "county_code", "zip_code"), colnames(data))
+    col_idx <- match(c("state_code", "county_code", "zip", "city"), colnames(data))
     if (is.na(col_idx[1])) {
         cli_abort("{.arg data} must have a {.var state_code} column.")
     }
-    if (is.na(col_idx[2]) && is.na(col_idx[2])) {
-        cli_abort("{.arg data} must have a {.var county_code} or {.var zip_code} column.")
+    if (is.na(col_idx[2]) && is.na(col_idx[3]) && is.na(col_idx[4])) {
+        cli_abort("{.arg data} must have a {.var county_code}, {.var zip}, or {.var city} column.")
     }
 
     need <- tibble()
@@ -44,10 +46,21 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
             dplyr::bind_rows(need)
     }
     if (!is.na(col_idx[3])) { # match ZIPs to counties
+        cat(names(data[col_idx[c(1, 3)]]))
         need <- dplyr::semi_join(
-            county_zip_code,
-            data[c(1, 3)],
-            by = c("state_code", "zip_code")
+            city_zip_county,
+            data[col_idx[c(1, 3)]],
+            by = c("state_code", "zip")
+        ) |>
+            dplyr::distinct(.data$state_code, .data$county_code) |>
+            dplyr::filter(!is.na(.data$state_code), !is.na(.data$county_code)) |>
+            dplyr::bind_rows(need)
+    }
+    if (!is.na(col_idx[4])) { # match cities to counties
+        need <- dplyr::semi_join(
+            city_zip_county,
+            data[col_idx[c(1, 4)]],
+            by = c("state_code", "city")
         ) |>
             dplyr::distinct(.data$state_code, .data$county_code) |>
             dplyr::filter(!is.na(.data$state_code), !is.na(.data$county_code)) |>
