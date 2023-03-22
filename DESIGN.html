@@ -88,6 +88,7 @@
 <li>Download data for each county:
 <ol style="list-style-type: decimal"><li>Download Census <code>EDGES</code>, <code>FACES</code>, <code>ADDRFEAT</code>, and <code>FEATNAMES</code> files</li>
 <li>Subset to appropriate columns and parse appropriate types</li>
+<li>For <code>ADDRFEAT</code>, dedupe TLIDs/rows which have different address ranges (we don’t use specific address ranges)</li>
 <li>Save as parquet (or rds for the one geo column in <code>EDGES</code>)</li>
 </ol></li>
 </ol></div>
