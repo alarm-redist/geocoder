@@ -19,3 +19,4 @@ data-raw/*
 !inst/extdata/*.rds
 
 *_cache
+devel.R

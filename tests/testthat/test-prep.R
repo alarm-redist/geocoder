@@ -1,4 +1,4 @@
-skip("Working on `prep.R`")
+# skip("Working on `prep.R`")
 
 test_that("Database preparation works without errors", {
     expect_no_error({

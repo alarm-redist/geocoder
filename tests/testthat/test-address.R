@@ -9,7 +9,7 @@ test_that("addresses are parsed correctly", {
 
     expected = tibble(state_code = "37",
                       county_code = NA_character_,
-                      zip_code = "27948",
+                      zip = "27948",
                       city = "KILL DEVIL HILLS",
                       num = 505L,
                       num_suff = NA_character_,
