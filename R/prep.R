@@ -104,7 +104,8 @@ gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2
                 "LFROMHN", "LTOHN", "RFROMHN", "RTOHN", "ZIPL", "ZIPR",
                 "PARITYL", "PARITYR", "PLUS4L", "PLUS4R",
                 "geometry"
-            ))
+            )) |>
+            dplyr::distinct()
         arrow::write_dataset(sf::st_drop_geometry(cen_addr_feat), outpath)
     }
 
@@ -115,7 +116,8 @@ gc_make_db <- function(state_code, county_code, path = gc_cache_path(), year = 2
                 "TLID", "FULLNAME", "NAME", "PREDIRABRV", "PRETYPABRV", "PREQUALABR",
                 "SUFDIRABRV", "SUFTYPABRV", "SUFQUALABR", "PREDIR", "PRETYP",
                 "PREQUAL", "SUFDIR", "SUFTYP", "SUFQUAL"
-            ))
+            )) |>
+            dplyr::mutate(dplyr::across("FULLNAME":"SUFQUAL", str_to_upper))
         arrow::write_dataset(cen_featnames, outpath)
     }
 

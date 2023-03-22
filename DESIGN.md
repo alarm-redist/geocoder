@@ -66,6 +66,7 @@ See [`prep.R`](R/prep.R); [`test-prep.R`](tests/testthat/test-prep.R)
 1. Download data for each county:
     1. Download Census `EDGES`, `FACES`, `ADDRFEAT`, and `FEATNAMES` files
     1. Subset to appropriate columns and parse appropriate types
+    1. For `ADDRFEAT`, dedupe TLIDs/rows which have different address ranges (we don't use specific address ranges)
     1. Save as parquet (or rds for the one geo column in `EDGES`)
 
 
