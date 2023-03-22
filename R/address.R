@@ -98,7 +98,7 @@ extract_city <- function(address) {
 # Streets and Cities ------
 parse_street_city <- function(address) {
     regex_city <- readRDS(system.file("extdata/city_regex.rds", package="geocoder"))
-    regex_street_city <<- str_glue(
+    regex_street_city <- str_glue(
         "^(\\d+)([A-Z]?)(?: {regex_street_dirs})?\\.?((?: \\S+)+?) ",
         "(?:{regex_street_types})\\.?(?: {regex_street_dirs_short})?\\.?",
         "( {regex_unit})?((?: \\S+)+)$"

@@ -14,24 +14,25 @@ d_addr |> # user's data, contains addresses
 **Internal** (see [`sysdata.R`](data-raw/sysdata.R))
 - `states`: FIPS lookup (full name, postal code, and AP abbreviation)
 - `counties`: FIPS lookup
-- `county_zip_code`: ZIP->county lookup built from HUD crosswalk. **TODO** get reverse crosswalk data and build in the other direction
 - `street_dirs`: standardized street direction lookup
 - `street_types`: standardized street type lookup
+
+**Larger internal** (see [`city_zip_county.R`](data-raw/city_zip_county.R))
+- `city_zip_county.rds`: ZIP/county/city combinations table built from HUD crosswalks, ZIP database, and USGS GNIS.
+- `city_regex.rds`: trie-ified regex matching all city names in `city_zip_county` table
 
 **Regular expressions**
 
 We programatically build regexes for address parsing.
-Currently done in  [`zzz.R`](R/zzz.R) at load-time,
-but **TODO**: make these [trie-based](https://en.wikipedia.org/wiki/Trie) regexes because we are matching many options,
-and write code automatically to `R/` so that there is no load-time computation.
-
+These are pre-built in [`build_regex.R`](R/build_regex.R), with some higher-level regexes constructed on-the-fly.
+Larger regexes are [trie-based](https://en.wikipedia.org/wiki/Trie) regexes because we are matching many options.
+See also `city_regex.rds` above.
 
 **User-facing** (see [`nc_addr.R`](data-raw/nc_addr.R))
 - `nc_addr`: Random 1,000 addresses from Dare County, NC voter file
 
 ## Address Parsing: `gc_address()`
 See [`address.R`](R/address.R); [`test-address.R`](tests/testthat/test-address.R)
-
 
 **Stage input:** data frame with column(s) containing unparsed addresses
 
@@ -50,9 +51,9 @@ Thus "1 OXFORD ST CAMBRIDGE MA 02138" becomes, in order:
 1. "1 OXFORD ST CAMBRIDGE"
 1. "1 OXFORD ST"
 
+
 ## Data Download and Preparation: `gc_prep_street_db()`
 See [`prep.R`](R/prep.R); [`test-prep.R`](tests/testthat/test-prep.R)
-
 
 **Stage input:**  tibble containing addresses standardized and parsed into columns
 
@@ -66,6 +67,7 @@ See [`prep.R`](R/prep.R); [`test-prep.R`](tests/testthat/test-prep.R)
     1. Download Census `EDGES`, `FACES`, `ADDRFEAT`, and `FEATNAMES` files
     1. Subset to appropriate columns and parse appropriate types
     1. Save as parquet (or rds for the one geo column in `EDGES`)
+
 
 ## Joining Addresses to Streets and Address Ranges: `gc_code_feat()` [internal]
 See [`geocode.R`](R/geocode.R)

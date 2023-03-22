@@ -2,9 +2,11 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^LICENSE\.md$
+^DESIGN\.md$
 ^\.github$
 ^data-raw$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^R/build_regex\.R$
+^devel\.R$
