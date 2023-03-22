@@ -30,6 +30,9 @@
 gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
                               save_edge = TRUE, save_face = TRUE, save_cens = FALSE,
                               refresh = FALSE) {
+    city_zip_county <- readRDS(
+        system.file("extdata", "city_zip_county.rds", package = "geocoder", mustWork = TRUE)
+    )
     col_idx <- match(c("state_code", "county_code", "zip", "city"), colnames(data))
     if (is.na(col_idx[1])) {
         cli_abort("{.arg data} must have a {.var state_code} column.")
@@ -46,7 +49,6 @@ gc_prep_street_db <- function(data, path = gc_cache_path(), year = 2022,
             dplyr::bind_rows(need)
     }
     if (!is.na(col_idx[3])) { # match ZIPs to counties
-        cat(names(data[col_idx[c(1, 3)]]))
         need <- dplyr::semi_join(
             city_zip_county,
             data[col_idx[c(1, 3)]],
