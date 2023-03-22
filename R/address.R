@@ -126,7 +126,16 @@ parse_street <- function(address) {
         "(?:{regex_street_types})\\.?(?: {regex_street_dirs})?\\.?( {regex_unit})?(?: [A-Z]+)*$"
     )
 
-    out <- str_match(address, regex_street)
+    #regex_abb <- "(?:A[KLRZ]|C[AOT]|DE|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|PA|RI|S[CD]|T[NX]|UT|V[AT]|W[AIVY])"
+
+    out <- address |>
+        str_remove(" ?\\(.+\\) ?") |>
+        str_replace("RD (\\d+)$", "RD \\1 RD") |>
+        str_replace("RTE (\\d+)$", "RTE \\1 RTE") |>
+        str_replace("ROUTE (\\d+)$", "RTE \\1 RTE") |>
+        str_replace("HWY (\\d+)$", "HWY \\1 HWY") |>
+        #str_replace(regex_abb, "STATE ROUTE \\1 RTE") |>
+        str_match(regex_street)
     tibble(
         num = as.integer(out[, 2]),
         num_suff = na_if(out[, 3], ""),
@@ -148,6 +157,7 @@ parse_street_only <- function(street) {
         str_remove(" ?\\(.+\\) ?") |>
         str_replace("RD (\\d+)$", "RD \\1 RD") |>
         str_replace("RTE (\\d+)$", "RTE \\1 RTE") |>
+        str_replace("ROUTE (\\d+)$", "RTE \\1 RTE") |>
         str_replace("HWY (\\d+)$", "HWY \\1 HWY") |>
         str_match(regex_street_only)
     tibble(
