@@ -69,7 +69,7 @@ store in Arrow format. One of <code>county</code> or <code>zip</code> must be pr
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>A data frame containing columns <code>state_code</code> and either
-<code>county_code</code> or <code>zip_code</code>, such as the output of  <code><a href="gc_address.html">gc_address()</a></code>.</p></dd>
+<code>county_code</code>, <code>zip</code>, or <code>city</code>, such as the output of  <code><a href="gc_address.html">gc_address()</a></code>.</p></dd>
 
 
 <dt>path</dt>
@@ -113,6 +113,10 @@ if <code>save_face=TRUE</code>.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># may take longer than 5 seconds</span></span></span>
 <span class="r-in"><span><span class="fu">gc_prep_street_db</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>state_code <span class="op">=</span> <span class="st">"37"</span>, county_code <span class="op">=</span> <span class="st">"055"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">gc_prep_street_db</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>state_code <span class="op">=</span> <span class="st">"37"</span>, county_code <span class="op">=</span> <span class="st">"055"</span>,</span></span>
+<span class="r-in"><span>                             zip <span class="op">=</span> <span class="st">"27920"</span>, city <span class="op">=</span> <span class="st">"Buxton"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> state_code zip</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::semi_join(city_zip_county, data[col_idx[c(1, 3)]], by = c("state_code",     "zip")):</span> object 'city_zip_county' not found</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
